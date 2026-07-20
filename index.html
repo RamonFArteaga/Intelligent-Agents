@@ -8,17 +8,17 @@
 
   <style>
     :root {
-    --background: #090b0d;
-    --surface: #111419;
-    --surface-light: #181c23;
-    --border: #2a3039;
+  --background: #0f1217;
+  --surface: #171b22;
+  --surface-light: #202630;
+  --border: #303846;
 
-    --text: #e6e9ef;
-    --muted: #a9b1c1;
+  --text: #e8ebf0;
+  --muted: #aeb7c6;
 
-    --accent: #2EA8FF;
-    --accent-dark: #0078D4;
-    --link: #59B8FF;
+  --accent: #2ea8ff;
+  --accent-dark: #0078d4;
+  --link: #59b8ff;
 }
 
     * {
@@ -77,11 +77,12 @@
     }
 
     .nav-list {
-      display: flex;
-      gap: 45px;
-      overflow-x: auto;
-      list-style: none;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  overflow-x: visible;
+  list-style: none;
+}
 
     .nav-button {
       background: none;
@@ -279,19 +280,41 @@
       text-align: center;
     }
 
-    @media (max-width: 700px) {
-      .nav-list {
-        gap: 28px;
-      }
+    @media (max-width: 900px) {
+  .nav-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 28px;
+    padding-bottom: 7px;
 
-      .hero {
-        padding: 40px 0;
-      }
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-dark) var(--surface);
+  }
 
-      main {
-        padding-top: 30px;
-      }
-    }
+  .nav-list::-webkit-scrollbar {
+    height: 7px;
+  }
+
+  .nav-list::-webkit-scrollbar-track {
+    background: var(--surface);
+    border-radius: 10px;
+  }
+
+  .nav-list::-webkit-scrollbar-thumb {
+    background: var(--accent-dark);
+    border-radius: 10px;
+  }
+
+  .hero {
+    padding: 40px 0;
+  }
+
+  main {
+    padding-top: 30px;
+  }
+}
+
+
     .discussion-image {
   display: block;
   width: 100%;
