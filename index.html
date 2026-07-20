@@ -2015,102 +2015,623 @@ deliver a complex AI system.
     <!-- UNIT 6 AGENT COMMUNICATION -->
     <section id="unit6-agent-communication" class="section">
 
-      <h2 class="section-title">
-        Unit 6 Working Together: Communication between Agents
-      </h2>
+  <h2 class="section-title">
+    Unit 6 Working Together: Communication between Agents
+  </h2>
 
-      <p class="section-introduction">
-        An agent dialogue using KQML and KIF between Alice, a procurement
-        agent, and Bob, a warehouse stock-control agent.
-      </p>
+  <p class="section-introduction">
+    A structured dialogue between two autonomous agents using KQML performatives
+    and KIF knowledge expressions.
+  </p>
 
-      <div class="button-row">
-        <a
-          href="#"
-          class="button secondary open-section"
-          data-section="exercises"
-        >
-          ← Back to Exercises
-        </a>
-      </div>
+  <div class="button-row">
+    <a
+      href="#"
+      class="button secondary open-section"
+      data-section="exercises"
+    >
+      ← Back to Exercises
+    </a>
+  </div>
 
-      <div class="content-block">
-        <h2>Activity Content</h2>
+  <div class="content-block">
 
-        <p>
-          Paste the completed KQML and KIF agent dialogue in this workspace.
-        </p>
-      </div>
+    <h2>Agent Dialogue Using KQML and KIF</h2>
 
-    </section>
+    <h3>Activity Overview</h3>
+
+    <p>
+      This activity illustrates structured communication between two autonomous
+      software agents through the combined use of Knowledge Query and
+      Manipulation Language (KQML) and Knowledge Interchange Format (KIF).
+      Alice is a procurement agent responsible for evaluating stock requirements
+      and supporting purchasing decisions. Bob is a warehouse inventory agent
+      responsible for monitoring stock availability and maintaining
+      product-specification data.
+    </p>
+
+    <p>
+      KQML expresses the communicative intention of each message, while KIF
+      represents the semantic content of the information being requested or
+      supplied.
+    </p>
+
+    <h3>Message 1: Alice Queries the Available Stock</h3>
+
+    <pre><code>(ask-one
+    :sender Alice
+    :receiver Bob
+    :language KIF
+    :ontology warehouse-inventory
+    :reply-with stock-query-001
+    :content
+        "(available-stock
+            (television
+                (screen-size 50-inch))
+            ?quantity)")</code></pre>
+
+    <p>
+      Alice initiates the interaction using the KQML performative
+      <code>ask-one</code>. This performative is appropriate because she is
+      requesting a single determinate value: the number of 50-inch televisions
+      currently available in the warehouse. The variable
+      <code>?quantity</code> represents the unknown value that Bob is expected
+      to resolve.
+    </p>
+
+    <h3>Message 2: Bob Reports the Stock Quantity</h3>
+
+    <pre><code>(tell
+    :sender Bob
+    :receiver Alice
+    :language KIF
+    :ontology warehouse-inventory
+    :in-reply-to stock-query-001
+    :content
+        "(available-stock
+            (television
+                (screen-size 50-inch))
+            24)")</code></pre>
+
+    <p>
+      Bob responds with the KQML performative <code>tell</code>, indicating that
+      he is communicating a proposition that he holds to be true. The KIF
+      expression states that the warehouse currently contains 24 available
+      50-inch televisions. The <code>in-reply-to</code> field preserves the
+      relationship between the response and Alice's original query.
+    </p>
+
+    <h3>Message 3: Alice Queries the Number of HDMI Ports</h3>
+
+    <pre><code>(ask-one
+    :sender Alice
+    :receiver Bob
+    :language KIF
+    :ontology product-specifications
+    :reply-with hdmi-query-001
+    :content
+        "(hdmi-port-count
+            (television
+                (screen-size 50-inch))
+            ?number-of-ports)")</code></pre>
+
+    <p>
+      Alice submits a second query concerning the technical characteristics of
+      the televisions. The ontology changes from
+      <code>warehouse-inventory</code> to
+      <code>product-specifications</code>, reflecting the distinction between
+      stock-level information and product-feature information.
+    </p>
+
+    <h3>Message 4: Bob Provides the HDMI-Port Specification</h3>
+
+    <pre><code>(tell
+    :sender Bob
+    :receiver Alice
+    :language KIF
+    :ontology product-specifications
+    :in-reply-to hdmi-query-001
+    :content
+        "(hdmi-port-count
+            (television
+                (screen-size 50-inch))
+            3)")</code></pre>
+
+    <p>
+      Bob replies that each 50-inch television contains three HDMI ports. The
+      message remains machine-interpretable because the communicative act is
+      represented separately from the factual content. KQML identifies the
+      message as an assertion, while KIF encodes the product specification.
+    </p>
+
+    <h3>Message 5: Alice Confirms Receipt of the Information</h3>
+
+    <pre><code>(tell
+    :sender Alice
+    :receiver Bob
+    :language KIF
+    :ontology procurement
+    :content
+        "(information-received
+            (available-stock
+                (television
+                    (screen-size 50-inch))
+                24)
+            (hdmi-port-count
+                (television
+                    (screen-size 50-inch))
+                3))")</code></pre>
+
+    <p>
+      Alice confirms that both the inventory data and the technical
+      specification have been received successfully. This information can then
+      support a procurement decision, such as determining whether the current
+      stock level is sufficient or whether additional units should be ordered.
+    </p>
+
+    <h2>Critical Discussion</h2>
+
+    <p>
+      The dialogue demonstrates how agent communication languages support
+      coordination between autonomous and functionally specialised software
+      entities. Alice and Bob do not invoke one another's internal procedures
+      directly. Instead, they communicate through structured messages that
+      explicitly represent both communicative intent and semantic content.
+    </p>
+
+    <p>
+      KQML provides the interaction protocol through performatives such as
+      <code>ask-one</code> and <code>tell</code>. These performatives distinguish
+      between requesting information and asserting information. This distinction
+      is significant because agent communication is not limited to transferring
+      data; it also represents the intended computational function of each
+      message.
+    </p>
+
+    <p>
+      KIF complements KQML by providing a formal representation of the knowledge
+      being exchanged. In this case, that knowledge concerns product type,
+      screen size, stock quantity and HDMI-port count. Variables such as
+      <code>?quantity</code> and <code>?number-of-ports</code> support
+      declarative queries, while the returned values convert those queries into
+      explicit propositions.
+    </p>
+
+    <p>
+      The use of separate ontologies improves semantic precision. Inventory
+      availability is represented within the
+      <code>warehouse-inventory</code> ontology, whereas technical features are
+      represented within the <code>product-specifications</code> ontology. This
+      reduces ambiguity and supports interoperability between agents that may
+      have been implemented independently.
+    </p>
+
+    <p>
+      From an architectural perspective, the scenario illustrates the value of
+      distributed responsibility. Alice is responsible for procurement
+      reasoning, while Bob maintains authoritative knowledge of warehouse stock
+      and product attributes. Such separation improves modularity,
+      maintainability and organisational scalability because each agent can
+      evolve independently while continuing to communicate through an agreed
+      protocol.
+    </p>
+
+    <p>
+      Successful interaction nevertheless depends on both agents sharing
+      compatible assumptions regarding vocabulary, ontology and message
+      structure. Although KQML identifies the intention of a message, it does
+      not independently guarantee that both agents interpret the underlying
+      concepts identically. Robust multi-agent systems therefore require
+      clearly defined ontologies, validation mechanisms and suitable handling
+      of incomplete, inconsistent or unavailable information.
+    </p>
+
+    <h2>Relationship to the Learning Outcomes</h2>
+
+    <p>
+      This activity demonstrates an understanding of the motivations for
+      agent-based computing by showing how autonomous agents can distribute
+      responsibilities, maintain separate knowledge domains and coordinate
+      through explicit communication.
+    </p>
+
+    <p>
+      It also reflects principles underlying contemporary agent models. Alice
+      and Bob exhibit goal-directed behaviour, role specialisation and
+      structured interaction. Their communication is grounded in established
+      artificial intelligence research concerning knowledge representation,
+      speech-act theory and multi-agent coordination.
+    </p>
+
+  </div>
+
+</section>
 
 
     <!-- UNIT 8 NLP PARSE TREE -->
     <section id="unit8-parse-tree" class="section">
 
-      <h2 class="section-title">
-        Unit 8: Understanding Natural Language Processing (NLP):
-        Creation of a Constituency-Based Parse Tree
-      </h2>
+  <h2 class="section-title">
+    Unit 8: Understanding Natural Language Processing (NLP):
+    Creation of a Constituency-Based Parse Tree
+  </h2>
 
-      <p class="section-introduction">
-        Analysis of sentence structure through a constituency-based
-        natural-language parse tree.
-      </p>
+  <p class="section-introduction">
+    Constituency-based analysis of three English sentences, including a
+    syntactically ambiguous example.
+  </p>
 
-      <div class="button-row">
-        <a
-          href="#"
-          class="button secondary open-section"
-          data-section="exercises"
-        >
-          ← Back to Exercises
-        </a>
-      </div>
+  <div class="button-row">
+    <a
+      href="#"
+      class="button secondary open-section"
+      data-section="exercises"
+    >
+      ← Back to Exercises
+    </a>
+  </div>
 
-      <div class="content-block">
-        <h2>Activity Content</h2>
+  <div class="content-block">
 
-        <p>
-          Paste the constituency-based parse tree and its analysis in this
-          workspace.
-        </p>
-      </div>
+    <h2>Constituency-Based Parse Trees</h2>
 
-    </section>
+    <h3>1. The government raised interest rates.</h3>
+
+    <pre><code>(S
+  (NP
+    (DT The)
+    (NN government))
+  (VP
+    (VBD raised)
+    (NP
+      (NN interest)
+      (NNS rates)))
+  (. .))</code></pre>
+
+    <p>
+      This sentence has a straightforward constituent structure. The subject
+      noun phrase is <strong>The government</strong>, while the verb phrase
+      consists of the verb <strong>raised</strong> and the direct-object noun
+      phrase <strong>interest rates</strong>.
+    </p>
+
+    <h3>2. The internet gives everyone a voice.</h3>
+
+    <pre><code>(S
+  (NP
+    (DT The)
+    (NN internet))
+  (VP
+    (VBZ gives)
+    (NP
+      (PRP everyone))
+    (NP
+      (DT a)
+      (NN voice)))
+  (. .))</code></pre>
+
+    <p>
+      This sentence contains a ditransitive verb structure. The noun phrase
+      <strong>everyone</strong> functions as the indirect object, while
+      <strong>a voice</strong> functions as the direct object.
+    </p>
+
+    <h3>3. The man saw the dog with the telescope.</h3>
+
+    <p>
+      This sentence is syntactically ambiguous because the prepositional phrase
+      <strong>with the telescope</strong> can attach either to the verb phrase
+      or to the noun phrase.
+    </p>
+
+    <h3>Interpretation A: The Man Used the Telescope</h3>
+
+    <pre><code>(S
+  (NP
+    (DT The)
+    (NN man))
+  (VP
+    (VBD saw)
+    (NP
+      (DT the)
+      (NN dog))
+    (PP
+      (IN with)
+      (NP
+        (DT the)
+        (NN telescope))))
+  (. .))</code></pre>
+
+    <p>
+      In this interpretation, the prepositional phrase modifies the verb
+      <strong>saw</strong>. The telescope is therefore understood as the
+      instrument used by the man.
+    </p>
+
+    <h3>Interpretation B: The Dog Was Associated with the Telescope</h3>
+
+    <pre><code>(S
+  (NP
+    (DT The)
+    (NN man))
+  (VP
+    (VBD saw)
+    (NP
+      (NP
+        (DT the)
+        (NN dog))
+      (PP
+        (IN with)
+        (NP
+          (DT the)
+          (NN telescope)))))
+  (. .))</code></pre>
+
+    <p>
+      In this interpretation, the prepositional phrase modifies
+      <strong>the dog</strong>. The sentence therefore implies that the dog is
+      associated with or carrying the telescope.
+    </p>
+
+    <h2>Critical Discussion</h2>
+
+    <p>
+      These parse trees demonstrate how constituency-based analysis represents
+      the hierarchical structure of natural-language sentences. Rather than
+      treating a sentence as a flat sequence of words, constituency parsing
+      groups related elements into syntactic units such as noun phrases, verb
+      phrases and prepositional phrases.
+    </p>
+
+    <p>
+      The third example is particularly significant because it illustrates
+      prepositional-phrase attachment ambiguity, a recurrent challenge in
+      natural-language processing. Both interpretations are grammatically valid,
+      but they convey different meanings. An intelligent system must therefore
+      use semantic information, contextual evidence or probabilistic models to
+      determine the most plausible interpretation.
+    </p>
+
+    <p>
+      This issue is relevant to intelligent agents because language-enabled
+      agents must do more than identify grammatical structure. They must also
+      resolve ambiguity before taking action, retrieving information or
+      generating a response. Incorrect syntactic interpretation could lead to
+      inaccurate reasoning or inappropriate behaviour.
+    </p>
+
+    <h2>Relationship to the Learning Outcomes</h2>
+
+    <p>
+      The activity develops the knowledge and practical skills needed to apply
+      natural-language processing techniques within intelligent systems. It
+      also highlights a contemporary research issue in intelligent agent
+      systems: the reliable interpretation of ambiguous human language.
+    </p>
+
+  </div>
+
+</section>
 
 
     <!-- UNIT 10 DEEP LEARNING -->
     <section id="unit10-deep-learning" class="section">
 
-      <h2 class="section-title">
-        Unit 10: Deep Learning in Action: Deep Learning Application
-      </h2>
+  <h2 class="section-title">
+    Unit 10: Deep Learning in Action: Deep Learning Application
+  </h2>
 
-      <p class="section-introduction">
-        Critical examination of a practical application of deep learning.
-      </p>
+  <p class="section-introduction">
+    An evaluation of industrial predictive maintenance as a socially
+    significant application of deep learning.
+  </p>
 
-      <div class="button-row">
-        <a
-          href="#"
-          class="button secondary open-section"
-          data-section="exercises"
-        >
-          ← Back to Exercises
-        </a>
-      </div>
+  <div class="button-row">
+    <a
+      href="#"
+      class="button secondary open-section"
+      data-section="exercises"
+    >
+      ← Back to Exercises
+    </a>
+  </div>
 
-      <div class="content-block">
-        <h2>Activity Content</h2>
+  <div class="content-block">
 
-        <p>
-          Paste the completed deep learning application activity in this
-          workspace.
-        </p>
-      </div>
+    <h2>Deep Learning Application: Industrial Predictive Maintenance</h2>
 
-    </section>
+    <h3>Overview of the Technology</h3>
+
+    <p>
+      One deep learning application likely to have a substantial societal and
+      industrial impact is predictive maintenance for critical machinery.
+      Predictive maintenance uses operational data to estimate equipment
+      condition, identify abnormal behaviour and anticipate failure before a
+      breakdown occurs. In industrial environments, this may include monitoring
+      motors, pumps, compressors, gearboxes, conveyors and production-line
+      equipment.
+    </p>
+
+    <p>
+      Unlike reactive maintenance, where repairs are completed after failure,
+      or preventive maintenance, where components are replaced at predetermined
+      intervals, predictive maintenance attempts to determine when intervention
+      is genuinely required. Deep learning is particularly relevant because
+      industrial equipment produces large volumes of time-series data from
+      vibration sensors, temperature probes, electrical measurements, pressure
+      transmitters and supervisory control systems.
+    </p>
+
+    <h3>How It Works</h3>
+
+    <p>
+      A deep learning predictive-maintenance system begins by collecting
+      historical and real-time sensor data. These data may include motor
+      current, vibration, bearing temperature, oil pressure, speed, load and
+      previous failure records.
+    </p>
+
+    <p>
+      The data are cleaned, normalised and divided into time windows before
+      being supplied to a deep neural network. Different architectures may be
+      selected according to the maintenance problem:
+    </p>
+
+    <ul>
+      <li>
+        Convolutional neural networks can extract local patterns from vibration
+        signals or transformed sensor data.
+      </li>
+      <li>
+        Long short-term memory and gated recurrent unit networks can model
+        changes occurring across time.
+      </li>
+      <li>
+        Autoencoders can learn normal equipment behaviour and identify
+        deviations as anomalies.
+      </li>
+      <li>
+        Hybrid models can combine feature extraction with failure
+        classification or remaining-useful-life prediction.
+      </li>
+    </ul>
+
+    <p>
+      The model produces an output such as a failure probability, anomaly
+      score, equipment-health classification or estimate of remaining useful
+      life. A maintenance agent could then combine this result with operational
+      priorities, production schedules and maintenance resources. However, the
+      model should support human decision-making rather than autonomously
+      authorising high-risk maintenance actions.
+    </p>
+
+    <h3>Potential Positive Impact</h3>
+
+    <p>
+      Predictive maintenance could provide significant social and organisational
+      benefits. Earlier detection of mechanical deterioration may prevent sudden
+      equipment failures that could injure employees, damage machinery or
+      interrupt essential production. It may also reduce unnecessary component
+      replacement, energy inefficiency and material waste.
+    </p>
+
+    <p>
+      This is particularly relevant to my industrial experience. In a processing
+      facility, motor current, vibration, temperature and VFD information can
+      reveal developing mechanical or electrical problems. A deep learning
+      model could analyse these signals continuously and prioritise assets
+      requiring inspection. The practical value would not simply be predicting
+      failure; it would be converting equipment data into timely and explainable
+      maintenance decisions.
+    </p>
+
+    <p>
+      Predictive maintenance may also improve workforce effectiveness.
+      Maintenance technicians could spend less time responding to avoidable
+      emergencies and more time conducting planned inspections, root-cause
+      analysis and reliability improvements.
+    </p>
+
+    <h3>Ethical and Socio-Technical Concerns</h3>
+
+    <p>
+      Despite these benefits, predictive maintenance presents several ethical
+      and operational risks. The first is automation bias. A numerical failure
+      probability may appear objective even when it is based on incomplete
+      sensor data, an unrepresentative training set or changing operating
+      conditions. Employees may therefore defer to the model even when physical
+      inspection suggests a different conclusion.
+    </p>
+
+    <p>
+      False negatives are particularly serious because an undetected failure
+      could expose employees to unsafe equipment. False positives may also be
+      harmful because they can cause unnecessary shutdowns, wasted labour and
+      avoidable replacement costs. Data quality is therefore central to system
+      reliability.
+    </p>
+
+    <p>
+      There are also privacy and workforce-surveillance concerns. Equipment
+      data may indirectly record operator behaviour, production performance or
+      individual working patterns. If such data are repurposed for employee
+      evaluation without transparency or consent, a maintenance system could
+      become a mechanism for workplace monitoring.
+    </p>
+
+    <p>
+      Another concern is accountability. Responsibility must remain clearly
+      defined when a model recommends maintenance but a manager, engineer or
+      technician decides whether to act. Organisations should not use an opaque
+      model to transfer responsibility away from human decision-makers.
+    </p>
+
+    <p>
+      Deep learning models may also be difficult to interpret. A system may
+      correctly identify an abnormal condition without clearly explaining which
+      physical signals influenced the result. In a safety-critical environment,
+      an unexplained alert is less useful than one that identifies the affected
+      asset, relevant sensor trends, confidence level and probable failure mode.
+    </p>
+
+    <h3>Responsible Deployment</h3>
+
+    <p>
+      A responsible implementation should include:
+    </p>
+
+    <ul>
+      <li>Validation against real equipment failures and maintenance records.</li>
+      <li>Continuous monitoring for model drift and sensor deterioration.</li>
+      <li>Clear confidence levels and explanations.</li>
+      <li>Human verification before shutdown or repair decisions.</li>
+      <li>Audit logs showing model outputs and human actions.</li>
+      <li>Access controls governing operational and employee-related data.</li>
+      <li>Fallback procedures when sensors, networks or models fail.</li>
+    </ul>
+
+    <h3>Conclusion</h3>
+
+    <p>
+      Deep learning predictive maintenance has the potential to improve
+      industrial safety, reliability, resource efficiency and operational
+      continuity. Its greatest value lies in identifying complex deterioration
+      patterns that may not be visible through conventional inspections or fixed
+      alarm thresholds.
+    </p>
+
+    <p>
+      However, successful deployment requires more than model accuracy. The
+      system must operate within a socio-technical framework that includes
+      reliable sensors, competent technicians, transparent decision processes,
+      cybersecurity, human oversight and clearly assigned accountability. In my
+      view, predictive maintenance should function as an intelligent
+      decision-support capability rather than an autonomous replacement for
+      engineering judgement.
+    </p>
+
+    <h2>References</h2>
+
+    <p>
+      NIST (2023) <em>Artificial Intelligence Risk Management Framework
+      (AI RMF 1.0)</em>. National Institute of Standards and Technology.
+    </p>
+
+    <p>
+      Serradilla, O., Zugasti, E. and Zurutuza, U. (2020)
+      <em>Deep learning models for predictive maintenance: A survey,
+      comparison, challenges and prospects</em>.
+    </p>
+
+    <p>
+      Zonta, T. et al. (2022) 'A predictive maintenance model for optimising
+      production schedules using deep neural networks',
+      <em>Journal of Manufacturing Systems</em>, 62, pp. 450-462.
+    </p>
+
+  </div>
+
+</section>
 <!-- FInal Project -->
     <section id="FP" class="section">
       <h2 class="section-title">Final Project Implementation: Inquiro</h2>
