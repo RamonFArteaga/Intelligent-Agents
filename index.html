@@ -8,16 +8,18 @@
 
   <style>
     :root {
-      --background: #090b0d;
-      --surface: #111419;
-      --surface-light: #181c23;
-      --border: #2a3039;
-      --text: #e6e9ef;
-      --muted: #a9b1c1;
-      --accent: #e994e7;
-      --accent-dark: #71516f;
-      --link: #9db8ff;
-    }
+    --background: #090b0d;
+    --surface: #111419;
+    --surface-light: #181c23;
+    --border: #2a3039;
+
+    --text: #e6e9ef;
+    --muted: #a9b1c1;
+
+    --accent: #2EA8FF;
+    --accent-dark: #0078D4;
+    --link: #59B8FF;
+}
 
     * {
       box-sizing: border-box;
@@ -160,15 +162,11 @@
       margin-top: 30px;
     }
 
-    .button {
-      display: inline-block;
-      padding: 12px 20px;
-      border-radius: 7px;
-      background: var(--accent-dark);
-      color: white;
-      font-weight: bold;
-      border: 1px solid #926b90;
-      cursor: pointer;
+    .card:hover{
+    transform: translateY(-6px);
+    border-color:#2EA8FF;
+    background:var(--surface-light);
+    box-shadow:0 0 25px rgba(46,168,255,.18);
     }
 
     .button.secondary {
@@ -316,7 +314,10 @@
           <button class="nav-button" data-section="reflection">Reflection</button>
         </li>
         <li>
-          <button class="nav-button" data-section="project">Final Project</button>
+          <button class="nav-button" data-section="project">Project Proposal</button>
+        </li>
+        <li>
+          <button class="nav-button" data-section="FP">Final Project</button>
         </li>
         <li>
           <button class="nav-button" data-section="teamwork">Teamwork</button>
@@ -354,8 +355,13 @@
 
         <div class="button-row">
           <button class="button open-section" data-section="project">
-            View Final Project
+            View Project Proposal
           </button>
+
+        <div class="button-row">
+          <button class="button open-section" data-section="FP">
+            View Final Project
+          </button> 
 
           <button class="button secondary open-section" data-section="reflection">
             Read Reflection
@@ -389,7 +395,7 @@
             Design and implementation of Inquiro, a five-agent academic
             research and report-generation system.
           </p>
-          <a href="#" class="text-link open-section" data-section="project">
+          <a href="#" class="text-link open-section" data-section="FP">
             Open project →
           </a>
         </article>
@@ -409,104 +415,176 @@
 
     <!-- REFLECTION -->
     <section id="reflection" class="section">
-      <h2 class="section-title">Critical Reflection</h2>
+      <h2 class="section-title">Critical Reflection Final Assignment</h2>
 
       <p class="section-introduction">
-        This section presents a critical evaluation of my learning experience,
-        individual contribution, collaboration and application of intelligent
-        agent concepts.
+        This section presents three formative reflective case studies. 
+        Which are based on themes explored during 
+        the module and relate directly to my practical work, design decisions, and observations made while developing and testing agent-based systems.
+      </p>
+      <p>
+        Case #1: Bias in autonomous decision-making.
+      </p>
+      <p>
+        Case #2: Explainable decisions in agents (XAI)
+      </p>
+      <p>
+        Case #3: Responsible deployment of agents, including avoiding harmful or unintended emergent behaviours.
       </p>
 
       <div class="content-block">
+        <h2>Reflective Commentary: Development of Inquiro</h2>
+
         <h3>Introduction</h3>
 
         <p>
-          The Intelligent Agents module strengthened my understanding of how
-          autonomous systems perceive information, make decisions, communicate
-          and act within complex environments. The module also demonstrated
-          that effective agent development requires more than technical
-          functionality. It requires transparency, ethical governance,
-          validation, accountability and careful consideration of the
-          consequences of autonomous decision-making.
+        Inquiro is an LLM-powered multi-agent academic research system that decomposes a research question, retrieves papers from arXiv, validates results, summarizes and ranks evidence, and produces a structured report. The proposal was developed collaboratively by my team, then I completed the coding, integration, testing, modifications and final documentation individually as an assignment.
+        
+        The team discussions helped define the original four-agent architecture, but individual implementation exposed gaps that were not evident during the proposal stage. I therefore added a fifth agent, the Validator, plus logging, performance measurement, automated testing and controlled error handling.
+      
+        Using Rolfe, Freshwater and Jasper’s (2001) What?–So what?–Now what? framework, I reflect on bias, explainability and responsible deployment.
+        </p>
+
+        <h2>Case Study 1: Bias in Autonomous Decision-Making</h2>
+
+        <h3>What?</h3>
+
+        <p>
+        The Processor Agent used Mistral to summarize papers and assign relevance scores from 0 to 100. Initially, I treated this ranking as a technical output and assumed that papers from an academic database would be assessed objectively.
+       
+        During testing, I recognized that the ranking depended on the query wording, the papers available in arXiv and the model’s interpretation. The apparent precision of a numerical score could therefore conceal uncertainty.
+        </p>
+
+        <h3>So what?</h3>
+
+        <p>
+        This changed my understanding of bias. I had associated AI bias mainly with unfair decisions involving people, but Inquiro showed me that bias can also emerge through source selection, terminology, database coverage and scoring criteria.
+        
+        A relevant paper could rank lower because it used different language, while a less important paper could score highly because its abstract closely matched the query. Retrieval-Augmented Generation grounds outputs in external evidence (Lewis et al., 2020); however, my testing demonstrated that grounding does not make either retrieval or model judgement neutral.
+        
+        I also realized that my design decisions shaped the outcome. Selecting only arXiv was practical and cost-effective, but it restricted the evidence base. This made me more cautious about presenting the ranking as authoritative and showed me that autonomous decisions must be evaluated across the whole pipeline.
+        </p>
+
+        <h3>Now what?</h3>
+
+        <p>
+        I would retrieve from multiple databases, compare rankings across models and ask human reviewers to assess samples. I would label relevance scores as model-generated recommendations and expose the criteria behind them.
+        
+        This learning applies directly to my industrial work at JBS, where predictive systems may influence maintenance priorities. I would not permit a model score alone to determine a high-risk maintenance decision.
+        </p>
+
+        <h2>Case Study 2: Explainable Decisions in Agents</h2>
+
+        <h3>What?</h3>
+
+        <p>
+        The proposal identified intermediate outputs as support for explainability. In the final system, the Planner generated subtasks, the Processor provided score justifications, and the workflow stored logs and metrics.
+        
+        I also used a deterministic Jinja2 template for the Writer instead of allowing another LLM to rewrite the report. This reduced the risk of unsupported claims and improved consistency.
+        </p>
+
+        <h3>So what?</h3>
+
+        <p>
+        These features helped me distinguish transparency from explainability. A reasoning trace or justification shows what the system produced, but it does not prove that the reasoning is correct.
+        
+        LLM explanations can sound persuasive despite incomplete evidence. Yao et al. (2023) demonstrate the value of combining reasoning and action, but my implementation showed that observable reasoning still requires verification.
         </p>
 
         <p>
-          My learning developed through academic discussions, collaborative
-          planning and the individual implementation of the Inquiro
-          multi-agent system.
+        I felt more confident when logs made the workflow visible because errors became easier to trace. However, I also became concerned that users could over-trust fluent explanations.
+        
+        My industrial troubleshooting experience influenced this response. A maintenance diagnosis must be verified against measurements, equipment condition and manuals; plausibility alone is insufficient. The same principle applies to agents.
+        </p>
+
+        <h3>Now what?</h3>
+
+        <p>
+        I would show which abstract passages influenced each score and separate retrieved facts from model interpretation.
+       
+        I would retain deterministic reporting, logs and source links as an audit trail. In future systems, explanations will support human judgement rather than replace it.
+        
+        I now view explainability as a verification mechanism, not merely a presentation feature.
+        </p>
+
+        <h2>Case Study 3: Responsible Deployment of Agents</h2>
+
+        <h3>What?</h3>
+
+        <p>
+        Important changes resulted from failure. During testing, arXiv returned an HTTP 503 error, while Mistral sometimes produced malformed JSON or additional text.
+        
+        I added controlled error handling, JSON extraction, fallback behavior and a Validator Agent to remove duplicate or incomplete records. The final system also completed five automated tests and recorded execution metrics.
+        </p>
+
+        <h3>So what?</h3>
+
+        <p>
+        These incidents changed my focus from “Can the system complete the task?” to “Can it fail safely and visibly?”
+        
+        Russell and Norvig (2021) describe agents through goal-directed action, but responsible deployment also requires limits on that action. Validation prevented poor-quality data from reaching semantic processing, while graceful degradation prevented an external failure from causing an uncontrolled crash.
+        
+        The teamwork stage also affected me emotionally. I felt disappointed because some members did not appear to contribute ideas or progress consistently.
+        
+        My role as a maintenance superintendent at JBS has trained me to work under pressure, so I remained focused and ensured that the proposal was delivered on time.
+       
+        Nevertheless, I felt that I was carrying more responsibility than expected. My response was to take control rather than establish stronger accountability early. This protected the deadline but limited collaboration.
+        
+        I was also disappointed with the grade because I believed the work demonstrated greater effort and technical quality.
+        
+        Reflecting on this, I recognize that effort must be made visible through documented decisions, contributions and evidence.
+        </p>
+
+        <h3>Now what?</h3>
+
+        <p>
+        In future team projects, I will establish responsibilities, intermediate deadlines and contribution records from the beginning.
+       
+        For agent deployment, I will include validation, testing, logging, human approval and recovery behavior in the initial architecture.
+        
+        Wooldridge (2009) emphasizes defined agent responsibilities; I now understand that human responsibilities must be equally explicit.
+        </p>
+
+        <h2>Conclusion</h2>
+
+        <p>
+        Inquiro developed my technical skills in LangGraph orchestration, local LLM integration, validation, testing, error handling and deterministic reporting.
+        
+        More importantly, it changed how I evaluate intelligent agents. I now examine bias across the entire pipeline, treat explanations as evidence that requires verification, and design systems for safe failure, transparency and human oversight.
+        
+        The project also revealed a weakness in my teamwork behavior: under pressure, I tend to assume control rather than delegate.
+        
+        In the future, I will combine technical ownership with clearer responsibilities, earlier communication, documented contributions and stronger collaboration, while applying these lessons to academic projects and industrial AI systems.
+        </p>
+
+        <h2>References</h2>
+
+        <p>
+        Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W.T., Rocktäschel, T., Riedel, S. and Kiela, D. (2020) <em>Retrieval-Augmented Generation for knowledge-intensive NLP tasks</em>. Advances in Neural Information Processing Systems, 33, pp. 9459–9474.
+        </p>
+
+        <p>
+        Rolfe, G., Freshwater, D. and Jasper, M. (2001). <em>Critical Reflection in Nursing and the Helping Professions: A User's Guide.</em> Basingstoke: Palgrave Macmillan.
+        </p>
+
+        <p>
+        Russell, S.J. and Norvig, P. (2021). <em>Artificial Intelligence: A Modern Approach.</em> 4th ed. Harlow: Pearson.
+        </p>
+
+        <p>
+        Wooldridge, M. (2009). <em>An Introduction to MultiAgent Systems.</em> 2nd ed. Chichester: John Wiley & Sons.
+        </p>
+
+        <p>
+        Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K. and Cao, Y. (2023). <em>ReAct: Synergizing reasoning and acting in language models.</em> International Conference on Learning Representations.
         </p>
       </div>
 
-      <div class="content-block">
-        <h3>Bias in Autonomous Decision-Making</h3>
-
-        <p>
-          One of the most important lessons was that intelligent agents may
-          reproduce or amplify bias contained in their training data,
-          retrieval sources or decision rules. An agent may appear objective
-          while still producing unequal or misleading outcomes.
-        </p>
-
-        <p>
-          This reinforced the importance of validating inputs, comparing
-          multiple sources and retaining human oversight when agent outputs
-          influence important decisions.
-        </p>
-      </div>
-
-      <div class="content-block">
-        <h3>Explainable Artificial Intelligence</h3>
-
-        <p>
-          Explainability became particularly relevant during the development
-          of Inquiro. A system that produces a report without showing how it
-          reached its conclusions is difficult to evaluate or trust.
-        </p>
-
-        <p>
-          Logging, source attribution, structured outputs and validation were
-          therefore essential elements of the final implementation. These
-          mechanisms improved traceability and made the agent workflow easier
-          to inspect.
-        </p>
-      </div>
-
-      <div class="content-block">
-        <h3>Responsible Deployment</h3>
-
-        <p>
-          The module changed my understanding of deployment. A technically
-          functional prototype is not automatically ready for responsible
-          organisational use. Deployment requires access controls, audit
-          trails, testing, human authorisation and clear boundaries around
-          agent autonomy.
-        </p>
-      </div>
-
-      <div class="content-block">
-        <h3>Conclusion</h3>
-
-        <p>
-          Overall, the module developed my ability to connect intelligent agent
-          theory with practical system design. The collaborative proposal
-          strengthened the conceptual foundation of the project, while the
-          individual implementation required me to translate that foundation
-          into a functional and testable system.
-        </p>
-
-        <p>
-          The experience reinforced the importance of explainability,
-          validation, responsible deployment and human oversight. These lessons
-          are directly applicable to my professional interest in developing
-          reliable artificial intelligence solutions for industrial
-          environments.
-        </p>
-      </div>
     </section>
 
-    <!-- FINAL PROJECT -->
+    <!-- PROJECT PROPOSAL -->
     <section id="project" class="section">
-      <h2 class="section-title">Final Project: Inquiro</h2>
+      <h2 class="section-title">Project Proposal: Inquiro</h2>
 
       <p class="section-introduction">
         Inquiro is an LLM-powered multi-agent system designed to support
@@ -515,19 +593,667 @@
       </p>
 
       <div class="content-block">
-        <h3>Project Overview</h3>
+        
+<h2>Project Proposal</h2>
 
-        <p>
-          The original project proposal was developed collaboratively by the
-          team. I individually implemented, tested, modified and documented the
-          final system.
-        </p>
+<p>
+This section presents the original proposal for <strong>Inquiro</strong>,
+an LLM-powered multi-agent academic research system developed as part of the
+Artificial Intelligence Agents module. The proposal describes the initial
+architecture, design decisions, development methodology, and technology stack
+that guided the implementation of the final system.
+</p>
 
-        <p>
-          The proposal initially described four agents. During implementation,
-          I introduced an additional Validator Agent to improve output quality,
-          structural compliance and reliability.
-        </p>
+<hr>
+
+<h2>1. Executive Summary</h2>
+
+<p>
+Inquiro is a proposed LLM-powered multi-agent system designed to support
+academic research. The system decomposes research questions into manageable
+subtasks, retrieves relevant literature, processes research findings, and
+generates structured offline reports.
+</p>
+
+<p>
+Rather than relying on a single monolithic AI model, the proposal introduces
+multiple specialised agents coordinated through LangGraph. This architecture
+improves modularity, transparency, maintainability, and simplifies future
+system expansion.
+</p>
+
+<hr>
+
+<h2>2. Literature Review and Academic Context</h2>
+
+<p>
+The proposal is based on established research in intelligent agents,
+multi-agent systems and Retrieval-Augmented Generation (RAG).
+</p>
+
+<ul>
+
+<li>
+Russell and Norvig describe intelligent agents as autonomous systems capable
+of perceiving their environment and acting toward specific goals.
+</li>
+
+<li>
+Wooldridge explains that Multi-Agent Systems distribute responsibilities among
+specialised agents, improving modularity and maintainability.
+</li>
+
+<li>
+Lewis et al. introduce Retrieval-Augmented Generation (RAG), reducing
+hallucinations by grounding LLM responses using external knowledge sources.
+</li>
+
+<li>
+Yao et al. demonstrate the ReAct methodology, combining reasoning and action
+within Large Language Model agents.
+</li>
+
+</ul>
+
+<p>
+These concepts formed the theoretical foundation of the proposed Inquiro
+architecture.
+</p>
+
+<hr>
+
+<h2>3. System Requirements and Assumptions</h2>
+
+<h3>Functional Requirements</h3>
+
+<ul>
+
+<li>Accept research queries from the user.</li>
+
+<li>Decompose complex research topics into smaller subtasks.</li>
+
+<li>Retrieve relevant academic literature.</li>
+
+<li>Summarise, filter and rank research findings.</li>
+
+<li>Generate structured research reports.</li>
+
+<li>Store reports locally for future reference.</li>
+
+</ul>
+
+<h3>Project Assumptions</h3>
+
+<ul>
+
+<li>Internet connectivity is available.</li>
+
+<li>Academic APIs remain accessible.</li>
+
+<li>Free-tier Large Language Models are sufficient for a prototype.</li>
+
+</ul>
+
+<hr>
+
+<h2>4. Design Decisions and Critical Evaluation</h2>
+
+<p>
+Several architectural decisions were made during the proposal phase to
+maximize modularity, maintainability and reproducibility.
+</p>
+
+<h3>LangGraph</h3>
+
+<p>
+LangGraph was selected because it provides explicit state management,
+deterministic workflows and simplifies communication between independent
+agents.
+</p>
+
+<h3>Multi-Agent Architecture</h3>
+
+<p>
+A four-agent architecture was selected instead of a single-agent solution.
+Separating responsibilities between specialised agents simplifies testing,
+maintenance and future scalability.
+</p>
+
+<h3>Mistral-7B</h3>
+
+<p>
+Mistral-7B was proposed as the primary language model due to its
+open-source availability, strong instruction-following capabilities and
+ability to run locally through Ollama.
+</p>
+
+<h3>arXiv</h3>
+
+<p>
+The arXiv repository was selected as the primary academic knowledge source
+because it provides high-quality scientific literature without subscription
+fees.
+</p>
+
+<h3>Jinja2 Templates</h3>
+
+<p>
+Instead of generating reports entirely through LLM responses, deterministic
+Jinja2 templates were proposed to improve consistency, repeatability and
+reproducibility of generated reports.
+</p>
+
+<hr>
+
+<h2>5. System Architecture and Coordination Topology</h2>
+
+<p>
+The proposed architecture consists of four specialised agents coordinated
+through a shared LangGraph state object.
+</p>
+
+<ul>
+
+<li><strong>Planner Agent</strong> — Decomposes complex research questions into structured subtasks.</li>
+
+<li><strong>Retriever Agent</strong> — Retrieves relevant academic literature from arXiv and optional web sources.</li>
+
+<li><strong>Processor Agent</strong> — Summarises, ranks and removes duplicate information.</li>
+
+<li><strong>Writer Agent</strong> — Produces a structured Markdown research report and stores it locally.</li>
+
+</ul>
+
+<p>
+All agents communicate exclusively through a shared LangGraph state object,
+allowing deterministic workflow execution while maintaining loose coupling
+between system components.
+</p>
+
+
+<hr>
+
+<h2>System Architecture</h2>
+
+<p>
+The proposed Inquiro architecture was designed around four specialised agents
+coordinated through a LangGraph orchestrator. Each agent performs a single
+responsibility while sharing information through a common state object,
+allowing deterministic execution and modular system expansion.
+</p>
+
+<p>
+The overall workflow follows this sequence:
+</p>
+
+<ol>
+
+<li>User submits a research question.</li>
+
+<li>LangGraph initializes and manages the shared workflow state.</li>
+
+<li>The Planner Agent decomposes the research problem into smaller subtasks.</li>
+
+<li>The Retriever Agent searches academic repositories.</li>
+
+<li>The Processor Agent evaluates, summarizes and ranks retrieved papers.</li>
+
+<li>The Writer Agent generates a structured Markdown report.</li>
+
+<li>The report is stored locally for future access.</li>
+
+</ol>
+
+<hr>
+
+<h2>Figure 1 – Proposed System Architecture</h2>
+
+<p>
+The proposed architecture follows a layered approach beginning with the user
+interface, continuing through the LangGraph orchestration layer, then the
+Planner, Retriever, Processor and Writer agents before finally storing the
+generated report locally.
+</p>
+
+<p>
+<i>Insert Figure 1 (System Architecture Diagram) here.</i>
+</p>
+
+<hr>
+
+<h2>Figure 2 – Sequence Diagram</h2>
+<hr>
+
+<h2>7. Development Methodology</h2>
+
+<p>
+The project was planned across four development weeks, with each stage focused
+on a specific milestone and set of deliverables.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Week</th>
+            <th>Milestone</th>
+            <th>Key Deliverables</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>Week 1</td>
+            <td>Setup and Design</td>
+            <td>
+                Roles assigned, Git repository created, shared state schema
+                agreed, five test queries defined, and the selected LLM
+                confirmed as operational.
+            </td>
+        </tr>
+
+        <tr>
+            <td>Week 2</td>
+            <td>Agent Development</td>
+            <td>
+                Planner and Retriever Agents implemented and unit-tested
+                independently. arXiv results were confirmed for three test
+                queries.
+            </td>
+        </tr>
+
+        <tr>
+            <td>Week 3</td>
+            <td>Integration and Processor Development</td>
+            <td>
+                The complete pipeline was connected through LangGraph.
+                The Processor Agent performed summarisation and ranking,
+                while the Writer Agent generated and stored report.md.
+            </td>
+        </tr>
+
+        <tr>
+            <td>Week 4</td>
+            <td>Evaluation and Reporting</td>
+            <td>
+                Five test queries were executed and logged. The Streamlit
+                interface was added, and the written report and demonstration
+                were prepared for submission.
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h2>8. Challenges and Mitigation Strategies</h2>
+
+<ul>
+    <li>
+        <strong>Hallucinations:</strong>
+        Mitigated through Retrieval-Augmented Generation and grounding in
+        external academic sources.
+    </li>
+
+    <li>
+        <strong>Task decomposition errors:</strong>
+        Reduced through structured prompts and clearly defined output formats.
+    </li>
+
+    <li>
+        <strong>Noisy or duplicate results:</strong>
+        Filtered through ranking, similarity comparison and deduplication.
+    </li>
+
+    <li>
+        <strong>Limited explainability:</strong>
+        Addressed by exposing intermediate outputs generated by each agent.
+    </li>
+
+    <li>
+        <strong>API failures:</strong>
+        Mitigated through retries, caching and fallback retrieval sources.
+    </li>
+
+    <li>
+        <strong>Agent coordination:</strong>
+        Managed through LangGraph state tracking and deterministic workflow
+        routing.
+    </li>
+</ul>
+
+<hr>
+
+<h2>9. Evaluation Strategy</h2>
+
+<p>
+The proposed system was intended to be evaluated using predefined research
+questions of varying complexity.
+</p>
+
+<p>
+The evaluation metrics included:
+</p>
+
+<ul>
+    <li>Relevance of the retrieved academic information.</li>
+    <li>Completeness of the generated report.</li>
+    <li>Coherence and readability of the final output.</li>
+    <li>Total processing time.</li>
+    <li>User satisfaction.</li>
+</ul>
+
+<p>
+Independent evaluation by multiple team members was proposed to reduce
+individual bias. Success would be measured against the assignment criteria,
+including data retrieval, data processing and offline storage of usable
+outputs.
+</p>
+
+<hr>
+
+<h2>10. Technical Resources</h2>
+
+<ul>
+    <li>
+        <strong>arXiv Python Package.</strong>
+        Used to retrieve academic papers without requiring an API key.
+    </li>
+
+    <li>
+        <strong>DuckDuckGo Search.</strong>
+        Proposed as an optional source for retrieving non-academic web content.
+    </li>
+
+    <li>
+        <strong>Hugging Face Inference API.</strong>
+        Considered as a free-tier cloud inference service.
+    </li>
+
+    <li>
+        <strong>Jinja2 Documentation.</strong>
+        Used to support deterministic report template generation.
+    </li>
+
+    <li>
+        <strong>LangGraph Documentation.</strong>
+        Used to define graph-based state management and agent orchestration.
+    </li>
+
+    <li>
+        <strong>Mistral-7B-Instruct.</strong>
+        Proposed as the local language model for planning, summarisation and
+        scoring.
+    </li>
+
+    <li>
+        <strong>NVIDIA NIM LLM APIs.</strong>
+        Considered as an alternative language-model inference platform.
+    </li>
+
+    <li>
+        <strong>Ollama.</strong>
+        Used to run open-source language models locally.
+    </li>
+
+    <li>
+        <strong>Streamlit.</strong>
+        Used to create the optional graphical user interface.
+    </li>
+</ul>
+
+<hr>
+
+<h2>11. Conclusion</h2>
+
+<p>
+This proposal outlined the design of Inquiro, an LLM-powered multi-agent
+system intended to support academic research and information gathering.
+The proposed solution used a Planner Agent, Retriever Agent, Processor Agent
+and Writer Agent working together to decompose research questions, retrieve
+relevant information, process findings and generate structured reports.
+</p>
+
+<p>
+The design was developed using concepts studied throughout the module,
+including intelligent agents, task decomposition and agent collaboration.
+A multi-agent approach was selected because it separates complex research
+tasks into smaller, more manageable components, making the system easier to
+understand, test and develop.
+</p>
+
+<p>
+The proposed technology stack relied on freely available tools such as
+LangGraph, Hugging Face, Ollama and the arXiv API, making the solution
+practical to implement within the scope of the project.
+</p>
+
+<p>
+Although challenges related to retrieval accuracy, explainability and source
+quality remained, appropriate mitigation strategies were identified as part
+of the design.
+</p>
+
+<p>
+Overall, the proposal demonstrated how agent-based approaches and Large
+Language Models could be combined to support academic research tasks in a
+structured and practical way.
+</p>
+
+<hr>
+
+<h2>12. References and Resources</h2>
+
+<div class="reference-list">
+
+    <p>
+        Wooldridge, M. (2009)
+        <em>An Introduction to MultiAgent Systems</em>.
+        John Wiley &amp; Sons.
+    </p>
+
+    <p>
+        Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V.,
+        Goyal, N., Küttler, H., Lewis, M., Yih, W.T., Rocktäschel, T.
+        and Riedel, S. (2020)
+        ‘Retrieval-augmented generation for knowledge-intensive NLP tasks’,
+        <em>Advances in Neural Information Processing Systems</em>,
+        33, pp. 9459–9474.
+    </p>
+
+    <p>
+        Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I.,
+        Narasimhan, K. and Cao, Y. (2022)
+        ‘ReAct: Synergizing reasoning and acting in language models’,
+        <em>arXiv preprint</em>, arXiv:2210.03629.
+    </p>
+
+    <p>
+        Zhu, Y., Liu, L., Yu, J. and Zhang, D. (2026)
+        ‘LLM-Based Multi-Agent Orchestration: A Survey of Frameworks,
+        Communication Protocols, and Emerging Patterns’.
+    </p>
+
+</div>
+
+<p>
+The sequence diagram illustrates the communication flow between the user,
+LangGraph orchestrator and each specialised agent throughout the research
+pipeline.
+</p>
+
+<p>
+The workflow demonstrates how responsibilities are delegated sequentially,
+allowing each agent to complete an independent task before passing structured
+data to the next stage.
+</p>
+
+<p>
+<i>Insert Figure 2 (Sequence Diagram) here.</i>
+</p>
+
+<hr>
+
+<h2>Architectural Layers</h2>
+
+<table>
+
+<tr>
+<th>Execution Layer</th>
+<th>Component</th>
+<th>Primary Responsibility</th>
+</tr>
+
+<tr>
+<td>User Interface</td>
+<td>Streamlit / CLI</td>
+<td>Accepts research queries and presents generated reports.</td>
+</tr>
+
+<tr>
+<td>Orchestration</td>
+<td>LangGraph</td>
+<td>Maintains workflow state, validates data and coordinates agent execution.</td>
+</tr>
+
+<tr>
+<td>Planning</td>
+<td>Planner Agent</td>
+<td>Transforms complex research questions into structured subtasks.</td>
+</tr>
+
+<tr>
+<td>Retrieval</td>
+<td>Retriever Agent</td>
+<td>Retrieves academic papers using external APIs.</td>
+</tr>
+
+<tr>
+<td>Processing</td>
+<td>Processor Agent</td>
+<td>Ranks, summarizes and filters retrieved information.</td>
+</tr>
+
+<tr>
+<td>Document Generation</td>
+<td>Writer Agent</td>
+<td>Produces deterministic Markdown reports.</td>
+</tr>
+
+<tr>
+<td>Storage</td>
+<td>Local File System</td>
+<td>Stores generated reports and historical JSON cache.</td>
+</tr>
+
+</table>
+
+<hr>
+
+<h2>Tools, Libraries & Development Environment</h2>
+
+<p>
+To avoid deployment restrictions, the proposed solution relied entirely on
+open-source software and freely available development tools.
+</p>
+
+<table>
+
+<tr>
+<th>Technology</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>Python 3.11+</td>
+<td>Main programming language.</td>
+</tr>
+
+<tr>
+<td>LangGraph</td>
+<td>State management and workflow orchestration.</td>
+</tr>
+
+<tr>
+<td>OpenAI Compatible API</td>
+<td>Cloud-based language model.</td>
+</tr>
+
+<tr>
+<td>Ollama</td>
+<td>Local execution of open-source LLMs.</td>
+</tr>
+
+<tr>
+<td>LangChain</td>
+<td>Unified interface for Large Language Models.</td>
+</tr>
+
+<tr>
+<td>arXiv API</td>
+<td>Academic paper retrieval.</td>
+</tr>
+
+<tr>
+<td>DuckDuckGo Search</td>
+<td>Optional non-academic web search.</td>
+</tr>
+
+<tr>
+<td>httpx</td>
+<td>HTTP communication with external APIs.</td>
+</tr>
+
+<tr>
+<td>Jinja2</td>
+<td>Template-based report generation.</td>
+</tr>
+
+<tr>
+<td>Streamlit</td>
+<td>Graphical user interface.</td>
+</tr>
+
+<tr>
+<td>pathlib</td>
+<td>Local report storage.</td>
+</tr>
+
+<tr>
+<td>difflib</td>
+<td>Duplicate paper detection.</td>
+</tr>
+
+</table>
+
+<hr>
+
+<h2>Data Flow State Schema</h2>
+
+<p>
+The proposal defined a shared state object used by every agent throughout the
+workflow. Each processing stage updated the shared state before transferring
+control to the next agent.
+</p>
+
+<pre><code>
+class InquiroState(TypedDict):
+
+    query: str
+
+    subtasks: List[str]
+
+    raw_results: List[Dict]
+
+    ranked_findings: List[Dict]
+
+    report_path: str
+</code></pre>
+
+<p>
+This centralized state design enables deterministic execution while keeping
+individual agents independent from one another.
+</p>
+
       </div>
 
       <div class="content-block">
@@ -594,7 +1320,7 @@
             href="documents/final-project.pdf"
             target="_blank"
           >
-            Final Project Document
+            Project Proposal Document
           </a>
         </div>
       </div>
@@ -604,10 +1330,106 @@
     <section id="teamwork" class="section">
       <h2 class="section-title">Teamwork</h2>
 
-      <p class="section-introduction">
-        Evidence and reflection related to collaborative project planning,
-        communication and contribution.
-      </p>
+
+<p>
+Although the final implementation of Inquiro was completed individually,
+the project began as a collaborative proposal developed by Team C. Throughout
+the planning phase, regular meetings were held to discuss the project scope,
+define the architecture, assign responsibilities and review design decisions.
+</p>
+
+<hr>
+
+<h3>Team Meetings</h3>
+
+<ul>
+
+<li>Discussed the overall objective of developing an LLM-powered academic research assistant.</li>
+
+<li>Evaluated different multi-agent architectures before selecting a modular agent-based approach.</li>
+
+<li>Agreed on using LangGraph for workflow orchestration and state management.</li>
+
+<li>Reviewed available technologies and selected an open-source technology stack.</li>
+
+<li>Collaboratively refined the proposal before submission.</li>
+
+<li>Discussed potential risks, limitations and future improvements.</li>
+
+</ul>
+
+<hr>
+
+<h3>Initial Team Contributions</h3>
+
+<p>
+During the proposal stage, responsibilities were distributed among team
+members to ensure that every aspect of the system design was covered.
+Contributions included:
+</p>
+
+<ul>
+
+<li>Researching intelligent agent architectures and related literature.</li>
+
+<li>Designing the overall system architecture.</li>
+
+<li>Evaluating technology alternatives and development frameworks.</li>
+
+<li>Preparing diagrams and workflow documentation.</li>
+
+<li>Reviewing and editing the proposal prior to submission.</li>
+
+</ul>
+
+<hr>
+
+<h3>My Contribution</h3>
+
+<p>
+For the final implementation, I independently transformed the original proposal
+into a fully functional application. While preserving the original vision of
+the project, I expanded the architecture and implemented additional features
+that significantly improved reliability and maintainability.
+</p>
+
+<ul>
+
+<li>Implemented the complete LangGraph workflow.</li>
+
+<li>Developed all five specialised agents.</li>
+
+<li>Added the Validator Agent, extending the original four-agent proposal.</li>
+
+<li>Integrated local LLM execution using Ollama and Mistral.</li>
+
+<li>Designed deterministic report generation using Jinja2 templates.</li>
+
+<li>Implemented execution logging and workflow metrics.</li>
+
+<li>Added JSON validation and parsing utilities.</li>
+
+<li>Developed automated unit and integration tests.</li>
+
+<li>Implemented graceful error handling and fallback behaviour.</li>
+
+<li>Produced the complete technical documentation and README.</li>
+
+</ul>
+
+<hr>
+
+<h3>Personal Reflection on Teamwork</h3>
+
+<p>
+Working as part of a multidisciplinary team highlighted the importance of
+communication, planning and shared decision-making during the proposal stage.
+Although the final software implementation was completed individually, the
+initial collaboration helped establish a clear project vision and a solid
+architectural foundation. The experience reinforced the value of combining
+collective planning with independent technical execution to successfully
+deliver a complex AI system.
+</p>
 
       <div class="grid">
         <article class="card">
@@ -649,7 +1471,7 @@
 
       <div class="grid">
         <article class="card">
-          <h3>Unit 1</h3>
+          <h3>Unit 1: Initial Post</h3>
           <p>Introduction to Agent-Based Computing.</p>
           <a href="documents/unit-1-discussion.pdf" target="_blank">
             View discussion →
@@ -657,23 +1479,7 @@
         </article>
 
         <article class="card">
-          <h3>Unit 2</h3>
-          <p>First Order Logic and knowledge representation.</p>
-          <a href="documents/unit-2-discussion.pdf" target="_blank">
-            View discussion →
-          </a>
-        </article>
-
-        <article class="card">
-          <h3>Unit 3</h3>
-          <p>Agent architectures and intelligent behaviour.</p>
-          <a href="documents/unit-3-discussion.pdf" target="_blank">
-            View discussion →
-          </a>
-        </article>
-
-        <article class="card">
-          <h3>Peer Response 1</h3>
+          <h3>Unit 1: Peer Response #1 1</h3>
           <p>
             Critical response addressing organisational applications,
             governance and agent reliability.
@@ -684,7 +1490,7 @@
         </article>
 
         <article class="card">
-          <h3>Peer Response 2</h3>
+          <h3>Unit 1: Peer Response #2</h3>
           <p>
             Critical response addressing LLM agents, automation, permissions
             and human oversight.
@@ -695,7 +1501,7 @@
         </article>
 
         <article class="card">
-          <h3>Summary Post</h3>
+          <h3>Unit 1: Summary Post</h3>
           <p>
             Summary of learning from the opening units and peer discussions.
           </p>
@@ -703,6 +1509,27 @@
             View summary →
           </a>
         </article>
+
+         <article class="card">
+          <h3>Unit 5: Agent Communication</h3>
+          <p>
+            Summary of learning from the opening units and peer discussions.
+          </p>
+          <a href="documents/summary-post.pdf" target="_blank">
+            View summary →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Unit 9: Introduction to Adaptative Algorithms</h3>
+          <p>
+            Summary of learning from the opening units and peer discussions.
+          </p>
+          <a href="documents/summary-post.pdf" target="_blank">
+            View summary →
+          </a>
+        </article>
+
       </div>
     </section>
 
@@ -754,27 +1581,1297 @@
         </article>
       </div>
     </section>
+<!-- FInal Project -->
+    <section id="FP" class="section">
+      <h2 class="section-title">Final Project Implementation: Inquiro</h2>
 
+      <p class="section-introduction">
+        Implmentation of Inquiro: Inquiro is an LLM-powered multi-agent system designed to support
+        academic research, analysis, validation and structured report
+        generation.
+      </p>
+<div class="content-block">
+      <hr>
+
+<h2>Final Implementation</h2>
+
+<p>
+This section presents the final implemented version of <strong>Inquiro v2</strong>,
+an LLM-powered multi-agent academic research planning system developed for the
+MSc Artificial Intelligence module on Intelligent Agents.
+</p>
+
+<p>
+Unlike the original proposal, the final implementation includes five specialised
+agents, automated testing, data validation, performance metrics, execution
+logging and controlled error handling.
+</p>
+
+<hr>
+
+<h2>1. Project Purpose</h2>
+
+<p>
+Inquiro is an LLM-powered multi-agent academic research system developed for the
+MSc Artificial Intelligence module on Intelligent Agents.
+</p>
+
+<p>
+The purpose of the application is to demonstrate how a Large Language Model can
+operate as part of an autonomous planning workflow rather than as a conventional
+chatbot.
+</p>
+
+<p>
+The system receives an academic research goal, decomposes it into a sequence of
+tasks, retrieves relevant academic literature, validates and processes the
+retrieved information, and produces a structured Markdown report.
+</p>
+
+<p>The application demonstrates:</p>
+
+<ul>
+    <li>Autonomous goal-driven behaviour.</li>
+    <li>Multi-agent coordination.</li>
+    <li>Explicit task planning.</li>
+    <li>Retrieval-Augmented Generation.</li>
+    <li>Local Large Language Model execution.</li>
+    <li>Academic information retrieval.</li>
+    <li>Data validation.</li>
+    <li>Semantic summarisation and ranking.</li>
+    <li>Deterministic report generation.</li>
+    <li>Execution logging.</li>
+    <li>Performance measurement.</li>
+    <li>Automated testing.</li>
+</ul>
+
+<hr>
+
+<h2>2. High-Level Solution Overview</h2>
+
+<p>
+Inquiro uses five specialised agents coordinated through LangGraph. Each agent
+has a clearly defined responsibility within the academic research workflow.
+</p>
+
+<div class="workflow-diagram">
+
+<pre><code>User Research Goal
+        |
+        v
+Planner Agent
+        |
+        v
+Retriever Agent
+        |
+        v
+Validator Agent
+        |
+        v
+Processor Agent
+        |
+        v
+Writer Agent
+        |
+        v
+Structured Markdown Report
+</code></pre>
+
+</div>
+
+<p>
+The agents communicate through a shared LangGraph state object.
+</p>
+
+<p>The shared state stores:</p>
+
+<ul>
+    <li>The original user query.</li>
+    <li>Planner reasoning.</li>
+    <li>Generated subtasks.</li>
+    <li>Retrieved papers.</li>
+    <li>Validated papers.</li>
+    <li>Processed findings.</li>
+    <li>Execution logs.</li>
+    <li>Errors.</li>
+    <li>Performance metrics.</li>
+    <li>The final report location.</li>
+</ul>
+
+<hr>
+
+<h2>3. Agent Responsibilities</h2>
+
+<h3>3.1 Planner Agent</h3>
+
+<p>
+The Planner Agent receives the research question and creates a structured
+execution plan.
+</p>
+
+<p>It produces:</p>
+
+<ul>
+    <li>A reasoning trace.</li>
+    <li>A list of research subtasks.</li>
+    <li>A planning output used by the remaining workflow.</li>
+</ul>
+
+<p>
+The Planner Agent does not answer the research question directly. This design
+demonstrates planning behaviour and improves transparency.
+</p>
+
+<h3>3.2 Retriever Agent</h3>
+
+<p>
+The Retriever Agent searches the arXiv academic repository.
+</p>
+
+<p>It retrieves:</p>
+
+<ul>
+    <li>Paper titles.</li>
+    <li>Authors.</li>
+    <li>Abstracts.</li>
+    <li>Publication dates.</li>
+    <li>Source URLs.</li>
+</ul>
+
+<p>
+The Retriever Agent also checks whether the user query appears to be an academic
+research question before sending it to arXiv.
+</p>
+
+<h3>3.3 Validator Agent</h3>
+
+<p>
+The Validator Agent performs data-quality checks before semantic processing.
+</p>
+
+<p>It:</p>
+
+<ul>
+    <li>Removes duplicate papers.</li>
+    <li>Removes incomplete records.</li>
+    <li>Confirms that required metadata is present.</li>
+    <li>Prevents malformed data from reaching the Processor Agent.</li>
+</ul>
+
+<p>
+The Validator Agent was added during development as an improvement over the
+original four-agent proposal.
+</p>
+
+<h3>3.4 Processor Agent</h3>
+
+<p>
+The Processor Agent uses the local Mistral model to analyse retrieved papers.
+</p>
+
+<p>It generates:</p>
+
+<ul>
+    <li>A concise summary for each paper.</li>
+    <li>A relevance score between 0 and 100.</li>
+    <li>A justification for the score.</li>
+    <li>A ranking of papers from highest to lowest relevance.</li>
+</ul>
+
+<p>
+All papers are processed in a single LLM request to reduce execution time and
+improve ranking consistency.
+</p>
+
+<h3>3.5 Writer Agent</h3>
+
+<p>
+The Writer Agent generates the final Markdown report.
+</p>
+
+<p>
+It uses a deterministic Jinja2 template instead of asking the LLM to write the
+complete report.
+</p>
+
+<p>This design improves:</p>
+
+<ul>
+    <li>Consistency.</li>
+    <li>Reproducibility.</li>
+    <li>Testability.</li>
+    <li>Report structure.</li>
+    <li>Control over the final output.</li>
+</ul>
+
+<p>
+The Writer Agent does not introduce new claims. It assembles the information
+produced by previous agents.
+</p>
+
+<hr>
+
+<h2>4. Technologies Used</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Technology</th>
+            <th>Purpose</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>Python 3.13</td>
+            <td>Main programming language.</td>
+        </tr>
+
+        <tr>
+            <td>LangGraph 1.2.8</td>
+            <td>Multi-agent workflow orchestration.</td>
+        </tr>
+
+        <tr>
+            <td>Ollama 0.24.0</td>
+            <td>Local LLM execution environment.</td>
+        </tr>
+
+        <tr>
+            <td>Mistral</td>
+            <td>Local Large Language Model.</td>
+        </tr>
+
+        <tr>
+            <td>arXiv Python Client</td>
+            <td>Academic paper retrieval.</td>
+        </tr>
+
+        <tr>
+            <td>Jinja2</td>
+            <td>Deterministic report generation.</td>
+        </tr>
+
+        <tr>
+            <td>PyTest</td>
+            <td>Unit and integration testing.</td>
+        </tr>
+
+        <tr>
+            <td>Python Logging</td>
+            <td>Execution evidence and debugging.</td>
+        </tr>
+
+        <tr>
+            <td>JSON</td>
+            <td>Execution summaries and workflow metrics.</td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h2>5. Model Execution Policy</h2>
+
+<p>The default execution model is:</p>
+
+<pre><code>mistral:latest</code></pre>
+
+<p>
+The model runs locally through Ollama.
+</p>
+
+<p>Local execution was selected because it:</p>
+
+<ul>
+    <li>Avoids API costs.</li>
+    <li>Supports offline inference.</li>
+    <li>Keeps user queries local.</li>
+    <li>Reduces dependence on external commercial services.</li>
+    <li>Matches the free-tier requirements of the project.</li>
+</ul>
+
+<p>
+The system also contains an LLM routing layer that can later support OpenAI.
+The active provider is controlled in <code>config.py</code>.
+</p>
+
+<p>Current configuration:</p>
+
+<pre><code>USE_LOCAL_MODEL = True
+LOCAL_MODEL_NAME = "mistral:latest"</code></pre>
+
+<p>
+OpenAI execution is not currently enabled because no API credits were available
+during development.
+</p>
+
+<hr>
+
+<h2>6. Project Structure</h2>
+
+<p>
+The project follows a modular architecture where each agent is implemented as
+an independent component. Supporting utilities, templates, tests and generated
+reports are organized into separate directories to improve maintainability and
+scalability.
+</p>
+
+<pre><code>
+inquiro/
+
+├── agents/
+│   ├── planner.py
+│   ├── retriever.py
+│   ├── validator.py
+│   ├── processor.py
+│   └── writer.py
+│
+├── llm/
+│   └── llm_router.py
+│
+├── utils/
+│   ├── logger.py
+│   ├── json_parser.py
+│   └── timer.py
+│
+├── templates/
+│   └── report_template.md
+│
+├── tests/
+│   ├── test_pipeline.py
+│   ├── test_planner.py
+│   ├── test_retriever.py
+│   ├── test_validator.py
+│   └── test_processor.py
+│
+├── reports/
+│   ├── report.md
+│   ├── execution_summary.json
+│   └── workflow_metrics.json
+│
+├── logs/
+│   └── execution.log
+│
+├── config.py
+├── state.py
+├── main.py
+├── requirements.txt
+├── pytest.ini
+└── README.md
+</code></pre>
+
+<hr>
+
+<h2>7. System Requirements</h2>
+
+<p>
+The application was developed and tested using the following software
+environment:
+</p>
+
+<ul>
+    <li>macOS</li>
+    <li>Python 3.13</li>
+    <li>Ollama 0.24.0</li>
+    <li>LangGraph 1.2.8</li>
+    <li>Mistral (latest)</li>
+    <li>PyTest 9.1.1</li>
+</ul>
+
+<p>
+An internet connection is required only for retrieving academic papers from
+arXiv. All Large Language Model inference executes locally through Ollama.
+</p>
+
+<hr>
+
+<h2>8. Installation Instructions</h2>
+
+<h3>Step 1 — Open the Project Directory</h3>
+
+<p>
+Navigate to the folder containing the project.
+</p>
+
+<pre><code>
+cd "/Users/username/path/to/inquiro"
+</code></pre>
+
+<h3>Step 2 — Create a Virtual Environment</h3>
+
+<p>Create a virtual environment:</p>
+
+<pre><code>
+python -m venv venv
+</code></pre>
+
+<p>Activate the environment on macOS or Linux:</p>
+
+<pre><code>
+source venv/bin/activate
+</code></pre>
+
+<p>Activate the environment on Windows:</p>
+
+<pre><code>
+venv\Scripts\activate
+</code></pre>
+
+<p>
+After activation, the terminal should display the virtual environment name.
+</p>
+
+<pre><code>
+(venv)
+</code></pre>
+
+<h3>Step 3 — Install Python Dependencies</h3>
+
+<pre><code>
+pip install -r requirements.txt
+</code></pre>
+
+<p>Main dependencies include:</p>
+
+<ul>
+    <li>LangGraph</li>
+    <li>LangChain</li>
+    <li>Ollama Python Client</li>
+    <li>arXiv</li>
+    <li>Jinja2</li>
+    <li>PyTest</li>
+</ul>
+
+<hr>
+
+<h2>9. Ollama Installation and Configuration</h2>
+
+<h3>Install Ollama</h3>
+
+<p>
+Download and install Ollama using the official installer for your operating
+system.
+</p>
+
+<h3>Download the Mistral Model</h3>
+
+<pre><code>
+ollama pull mistral
+</code></pre>
+
+<p>Verify that the model is installed:</p>
+
+<pre><code>
+ollama list
+</code></pre>
+
+<p>The output should include:</p>
+
+<pre><code>
+mistral:latest
+</code></pre>
+
+<h3>Verify That Ollama Is Running</h3>
+
+<pre><code>
+ollama ps
+</code></pre>
+
+<p>
+If the server is not running:
+</p>
+
+<pre><code>
+ollama serve
+</code></pre>
+
+<p>
+On macOS, Ollama may already be running as a background service. If so, the
+message below indicates that no additional action is required:
+</p>
+
+<pre><code>
+bind: address already in use
+</code></pre>
+
+<hr>
+
+<h2>10. Running the Application</h2>
+
+<p>
+From the project root directory, execute:
+</p>
+
+<pre><code>
+python main.py
+</code></pre>
+
+<p>The application displays:</p>
+
+<pre><code>
+Inquiro v2.0
+LLM-Powered Multi-Agent Academic Research Planning System
+
+Enter an academic research question.
+</code></pre>
+
+<p>Example query:</p>
+
+<pre><code>
+Applications of artificial intelligence in predictive maintenance
+</code></pre>
+
+<p>
+After pressing <strong>Enter</strong>, the workflow executes sequentially:
+</p>
+
+<ol>
+    <li>Planner Agent</li>
+    <li>Retriever Agent</li>
+    <li>Validator Agent</li>
+    <li>Processor Agent</li>
+    <li>Writer Agent</li>
+</ol>
+
+<hr>
+
+<h2>11. Expected Terminal Output</h2>
+
+<p>
+During successful execution, the terminal displays progress messages for each
+agent in the workflow.
+</p>
+
+<pre><code>
+Planner Agent started.
+Planner Agent completed.
+
+Retriever Agent started.
+5 papers retrieved from arXiv.
+Retriever Agent completed.
+
+Validator Agent started.
+Validation complete.
+5 valid papers.
+
+Processor Agent started.
+Processor Agent completed.
+
+Writer Agent started.
+Report successfully written.
+
+Workflow completed successfully.
+</code></pre>
+
+<p>
+The final output also displays:
+</p>
+
+<ul>
+    <li>Generated report location.</li>
+    <li>Number of papers retrieved.</li>
+    <li>Number of papers processed.</li>
+    <li>Total execution time.</li>
+    <li>Any recorded errors.</li>
+</ul>
+
+
+<hr>
+
+<h2>12. Generated Output Files</h2>
+
+<p>
+After a successful execution, Inquiro automatically generates several output
+files that document the research results, workflow execution and performance
+metrics.
+</p>
+
+<h3>Research Report</h3>
+
+<p><code>reports/report.md</code></p>
+
+<p>The primary application output contains:</p>
+
+<ul>
+    <li>Research question</li>
+    <li>Planner reasoning trace</li>
+    <li>Generated subtasks</li>
+    <li>Ranked academic papers</li>
+    <li>Paper summaries</li>
+    <li>Relevance scores</li>
+    <li>Score justifications</li>
+    <li>Source URLs</li>
+    <li>Workflow logs</li>
+    <li>Execution metrics</li>
+    <li>Recorded errors</li>
+</ul>
+
+<h3>Execution Summary</h3>
+
+<p><code>reports/execution_summary.json</code></p>
+
+<ul>
+    <li>User query</li>
+    <li>Number of retrieved papers</li>
+    <li>Processed findings</li>
+    <li>Report location</li>
+    <li>Execution logs</li>
+    <li>Recorded errors</li>
+</ul>
+
+<h3>Workflow Metrics</h3>
+
+<p><code>reports/workflow_metrics.json</code></p>
+
+<pre><code>
+{
+    "planner_time":10.251,
+    "retriever_time":1.204,
+    "validator_time":0.001,
+    "processor_time":30.015,
+    "writer_time":0.005,
+    "total_runtime":41.539
+}
+</code></pre>
+
+<h3>Execution Log</h3>
+
+<p><code>logs/execution.log</code></p>
+
+<p>
+The execution log records agent execution, Ollama requests, retrieval results,
+errors, report generation events and total workflow execution time, providing
+complete traceability for debugging and validation.
+</p>
+
+<hr>
+
+<h2>13. Automated Testing</h2>
+
+<p>
+The project includes automated unit and integration tests implemented with
+PyTest.
+</p>
+
+<p>Run the complete test suite using:</p>
+
+<pre><code>
+pytest
+</code></pre>
+
+<p>or</p>
+
+<pre><code>
+python -m pytest
+</code></pre>
+
+<p>The final implementation successfully passed all automated tests.</p>
+
+<pre><code>
+5 passed
+</code></pre>
+
+<p>The automated tests include:</p>
+
+<ul>
+    <li>Planner Agent unit test</li>
+    <li>Retriever Agent unit test</li>
+    <li>Validator Agent unit test</li>
+    <li>Processor Agent unit test</li>
+    <li>Complete pipeline integration test</li>
+</ul>
+
+<hr>
+
+<h2>14. Test Coverage</h2>
+
+<h3>Planner Agent</h3>
+
+<ul>
+    <li>Produces a reasoning trace.</li>
+    <li>Generates a non-empty list of subtasks.</li>
+</ul>
+
+<h3>Retriever Agent</h3>
+
+<ul>
+    <li>Returns a valid collection of academic papers.</li>
+</ul>
+
+<h3>Validator Agent</h3>
+
+<ul>
+    <li>Removes duplicate records.</li>
+    <li>Removes incomplete papers.</li>
+</ul>
+
+<h3>Processor Agent</h3>
+
+<ul>
+    <li>Generates summaries.</li>
+    <li>Assigns relevance scores.</li>
+    <li>Produces score justifications.</li>
+    <li>Preserves source information.</li>
+</ul>
+
+<h3>Complete Pipeline</h3>
+
+<ul>
+    <li>Workflow completes successfully.</li>
+    <li>Report is generated.</li>
+    <li>Papers are retrieved.</li>
+    <li>Findings are processed.</li>
+    <li>Performance metrics are recorded.</li>
+</ul>
+
+<hr>
+
+<h2>15. Functional Testing Evidence</h2>
+
+<p>
+The final functional validation used the following research query:
+</p>
+
+<blockquote>
+Applications of artificial intelligence in predictive maintenance
+</blockquote>
+
+<p>Execution results:</p>
+
+<ul>
+    <li>Papers Retrieved: <strong>5</strong></li>
+    <li>Papers Processed: <strong>5</strong></li>
+    <li>Total Runtime: <strong>41.539 seconds</strong></li>
+    <li>Workflow completed successfully.</li>
+</ul>
+
+<p>Generated artifacts:</p>
+
+<ul>
+    <li>report.md</li>
+    <li>execution_summary.json</li>
+    <li>workflow_metrics.json</li>
+    <li>execution.log</li>
+</ul>
+
+<hr>
+
+<h2>16. Error Handling</h2>
+
+<h3>arXiv Service Failure</h3>
+
+<p>
+During testing, the arXiv service returned an HTTP 503 error. Instead of
+terminating unexpectedly, the workflow:
+</p>
+
+<ul>
+    <li>Recorded the error.</li>
+    <li>Continued execution.</li>
+    <li>Skipped unavailable processing steps.</li>
+    <li>Generated a report.</li>
+    <li>Stored diagnostic information in the logs.</li>
+</ul>
+
+<p>
+This demonstrates graceful degradation rather than an uncontrolled application
+failure.
+</p>
+
+<h3>Invalid LLM JSON</h3>
+
+<p>
+Since Mistral may occasionally return malformed JSON or Markdown code fences,
+the application includes a dedicated JSON extraction utility that:
+</p>
+
+<ul>
+    <li>Removes Markdown formatting.</li>
+    <li>Attempts direct JSON parsing.</li>
+    <li>Searches for valid JSON structures.</li>
+    <li>Raises controlled exceptions if parsing fails.</li>
+</ul>
+
+<p>
+Both the Planner and Processor Agents also include fallback behaviour when
+structured output cannot be parsed.
+</p>
+
+<h3>Non-Academic Queries</h3>
+
+<p>
+The Retriever Agent validates whether a query is suitable for academic
+retrieval before contacting arXiv, preventing unnecessary API requests and
+reducing execution time.
+</p>
+
+<hr>
+
+<h2>17. Changes from the Original Proposal</h2>
+
+<p>
+The original proposal described a four-agent architecture:
+</p>
+
+<ul>
+    <li>Planner</li>
+    <li>Retriever</li>
+    <li>Processor</li>
+    <li>Writer</li>
+</ul>
+
+<p>
+The final implementation expanded the architecture to five agents:
+</p>
+
+<ul>
+    <li>Planner</li>
+    <li>Retriever</li>
+    <li>Validator</li>
+    <li>Processor</li>
+    <li>Writer</li>
+</ul>
+
+<p>
+The Validator Agent was introduced to improve data quality by removing duplicate
+or malformed records before semantic processing.
+</p>
+
+<p>Additional implementation improvements include:</p>
+
+<ul>
+    <li>Structured execution logging.</li>
+    <li>Workflow performance metrics.</li>
+    <li>JSON validation and extraction.</li>
+    <li>Centralized error recording.</li>
+    <li>Academic-query validation.</li>
+    <li>Automated testing.</li>
+    <li>Execution summary files.</li>
+    <li>Explicit local-model routing.</li>
+</ul>
+
+<hr>
+
+<h2>18. Current Limitations</h2>
+
+<ul>
+    <li>Academic retrieval currently depends on arXiv.</li>
+    <li>Execution speed depends on local hardware performance.</li>
+    <li>Only arXiv is supported as an academic source.</li>
+    <li>LLM-generated summaries should still be reviewed by users.</li>
+    <li>Reports are generated only in Markdown format.</li>
+</ul>
+
+<hr>
+
+<h2>19. Future Improvements</h2>
+
+<ul>
+    <li>Semantic Scholar integration.</li>
+    <li>IEEE Xplore integration.</li>
+    <li>PubMed integration.</li>
+    <li>Vector database support (FAISS / ChromaDB).</li>
+    <li>Semantic retrieval.</li>
+    <li>PDF report generation.</li>
+    <li>Interactive Streamlit interface.</li>
+    <li>Human approval workflow.</li>
+    <li>Cloud deployment.</li>
+    <li>OpenAI provider integration.</li>
+    <li>Citation verification.</li>
+    <li>Source-quality scoring.</li>
+    <li>Parallel paper processing.</li>
+    <li>Persistent research history.</li>
+</ul>
+
+<hr>
+
+<h2>20. Academic and Technical Sources</h2>
+
+<p>
+The implementation was informed by research on intelligent agents,
+multi-agent systems, Retrieval-Augmented Generation (RAG), ReAct reasoning,
+software architecture and software testing.
+</p>
+
+<p>Primary references include:</p>
+
+<ul>
+    <li>Russell &amp; Norvig — Intelligent Agent Theory</li>
+    <li>Wooldridge — Multi-Agent Systems</li>
+    <li>Lewis et al. — Retrieval-Augmented Generation</li>
+    <li>Yao et al. — ReAct</li>
+    <li>LangGraph Documentation</li>
+    <li>Ollama Documentation</li>
+    <li>arXiv Documentation</li>
+    <li>Jinja Documentation</li>
+    <li>PyTest Documentation</li>
+</ul>
+
+<hr>
+
+<h2>21. References</h2>
+
+<div class="reference-list">
+
+<p>arXiv (2026). <em>arXiv API User Manual.</em></p>
+
+<p>Jinja (2026). <em>Jinja Documentation.</em></p>
+
+<p>LangChain (2026). <em>LangGraph Documentation.</em></p>
+
+<p>Lewis, P. et al. (2020). <em>Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.</em></p>
+
+<p>Ollama (2026). <em>Ollama Documentation.</em></p>
+
+<p>Python Software Foundation (2026). <em>Python 3 Documentation.</em></p>
+
+<p>PyTest (2026). <em>PyTest Documentation.</em></p>
+
+<p>Russell, S. &amp; Norvig, P. (2021). <em>Artificial Intelligence: A Modern Approach (4th ed.).</em></p>
+
+<p>Wooldridge, M. (2009). <em>An Introduction to MultiAgent Systems (2nd ed.).</em></p>
+
+<p>Yao, S. et al. (2023). <em>ReAct: Synergizing Reasoning and Acting in Language Models.</em></p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+      </div>
+      </section>
     <!-- ABOUT -->
     <section id="about" class="section">
       <h2 class="section-title">About Me</h2>
 
       <div class="content-block">
-        <h3>Ramon Flores Arteaga</h3>
+        <h2>Ramón Flores Arteaga</h2>
 
-        <p>
-          I am a mechatronics engineer and maintenance professional with
-          experience in industrial automation, electrical and mechanical
-          troubleshooting, PLCs, variable-frequency drives, SCADA systems and
-          artificial intelligence.
-        </p>
+<h3>Mechatronics Engineer | MSc Artificial Intelligence</h3>
 
-        <p>
-          I am currently completing an MSc in Artificial Intelligence at the
-          University of Essex. My professional interests include intelligent
-          industrial systems, predictive maintenance, autonomous agents,
-          explainable AI and practical applications of large language models.
-        </p>
+<p>
+Welcome to my professional portfolio. I am a Mechatronics Engineer currently
+pursuing a Master of Science in Artificial Intelligence at the University of
+Essex. My professional background combines industrial maintenance,
+automation, artificial intelligence, project management and software
+development within multinational companies.
+</p>
+
+<hr>
+
+<h2>About Me</h2>
+
+<p>
+I am a person who takes risks to achieve more, with great initiative,
+adaptability to change and strong teamwork skills. Despite adversity,
+I remain focused on achieving objectives while helping the entire team
+reach its goals.
+</p>
+
+<hr>
+
+<h2>Contact</h2>
+
+<p><strong>Phone:</strong> 231-286-9191</p>
+
+<p><strong>Email:</strong> rammarteaga@gmail.com</p>
+
+<p>
+<strong>LinkedIn:</strong>
+<a href="https://www.linkedin.com" target="_blank">
+Ramón Flores Arteaga
+</a>
+</p>
+
+<hr>
+
+<h2>Languages</h2>
+
+<ul>
+<li>English — C1</li>
+<li>German — B1</li>
+<li>French — B1</li>
+</ul>
+
+<hr>
+
+<h2>Technical Skills</h2>
+
+<ul>
+<li>Artificial Intelligence</li>
+<li>Large Language Models (LLMs)</li>
+<li>NVIDIA Jetson AI</li>
+<li>Python</li>
+<li>Machine Learning</li>
+<li>PLC Programming</li>
+<li>Allen-Bradley PLC</li>
+<li>Siemens PLC</li>
+<li>Millennium PLC</li>
+<li>Ignition SCADA</li>
+<li>Variable Frequency Drives (VFDs)</li>
+<li>MySQL</li>
+<li>IBM Maximo</li>
+<li>SAP</li>
+<li>SolidWorks</li>
+<li>AutoCAD</li>
+<li>MATLAB</li>
+<li>Interloc Informer</li>
+</ul>
+
+<hr>
+
+<h2>Certifications</h2>
+
+<ul>
+<li>Google Agile Project Management (Scrum, Kanban, Waterfall, XP, Lean)</li>
+<li>IBM Maximo Certification – Grupo Bimbo</li>
+<li>Deep Learning Artificial Intelligence – Actumlogos</li>
+<li>Microsoft Azure Fundamentals</li>
+<li>ISTQB – Ford Motor Company</li>
+<li>CAN Protocol – Ford Motor Company</li>
+<li>GPDS v3.0 – Ford Motor Company</li>
+<li>VESM – Ford Motor Company</li>
+<li>Jira & Jenkins – Ford Motor Company</li>
+<li>Python for Business Analytics</li>
+</ul>
+
+<h2>Professional Experience</h2>
+
+<!-- ===================================================== -->
+
+<h3>JBS USA – Regional Beef Souderton</h3>
+
+<p><strong>Maintenance Supervisor / Engineering</strong></p>
+
+<p>September 2024 – Present</p>
+
+<ul>
+<li>Lead maintenance and engineering operations across Rendering, Blood Processing, Grinding, Wastewater Treatment and Hides facilities.</li>
+
+<li>Manage maintenance personnel, contractors and reliability initiatives to maximize equipment uptime and production efficiency.</li>
+
+<li>Develop predictive maintenance systems using Artificial Intelligence, motor amperage monitoring and failure prediction analytics.</li>
+
+<li>Design, implement and troubleshoot PLC, VFD and Ignition SCADA systems.</li>
+
+<li>Lead electrical and mechanical troubleshooting for critical production equipment.</li>
+
+<li>Train maintenance technicians in troubleshooting, preventive maintenance and safety.</li>
+
+<li>Optimize maintenance inventory by refurbishing and repurposing existing assets.</li>
+
+<li>Develop engineering and automation projects that improve plant efficiency.</li>
+
+<li>Create an AI-powered LLM troubleshooting platform using plant manuals, maintenance records and operational documentation.</li>
+
+<li>Support capital projects, budgeting, asset management and continuous improvement initiatives.</li>
+
+</ul>
+
+<hr>
+
+<h3>JBS – Pilgrim's Pride Corporation</h3>
+
+<p><strong>Maintenance Supervisor & Preventive Maintenance</strong></p>
+
+<p>January 2023 – July 2024</p>
+
+<ul>
+
+<li>Supervised preventive, predictive and corrective maintenance activities.</li>
+
+<li>Maintained WOG performance while minimizing second-grade chicken production.</li>
+
+<li>Oversaw equipment performance in the evisceration department.</li>
+
+</ul>
+
+<h3>Major Engineering Projects</h3>
+
+<ul>
+
+<li>Designed and implemented an automated washed-box counting system.</li>
+
+<li>Developed an automated compressor cooling system reducing oil costs by approximately $3,560 annually.</li>
+
+<li>Designed an AI chicken counting system using Deep Learning and photoelectric sensors, reducing defects by 50%.</li>
+
+<li>Designed and implemented an evisceration conveyor system increasing liver and gizzard recovery from 300 kg/day to approximately 2,000 kg/day.</li>
+
+<li>Developed an Artificial Intelligence model to predict Salmonella and E. coli risks for the Quality Assurance department.</li>
+
+<li>Reprogrammed PLC logic for the evisceration production line.</li>
+
+</ul>
+
+<hr>
+
+<h3>Grupo Bimbo Corporate</h3>
+
+<p><strong>Global Plant & Fleet Project Manager</strong></p>
+
+<p>August 2022 – January 2023</p>
+
+<p><strong>Global Plant & Fleet Maintenance Supervisor</strong></p>
+
+<p>April 2022 – January 2023</p>
+
+<ul>
+
+<li>Developed and supervised IBM Maximo integrations with Oracle Cloud.</li>
+
+<li>Implemented enterprise maintenance systems across Canada, United States, Brazil, Latin America, Spain, Portugal, United Kingdom, South Africa and additional global operations.</li>
+
+<li>Managed international IT and maintenance project budgets ranging from $50,000 to $1.2 million USD.</li>
+
+<li>Worked within Agile and Scrum methodologies delivering global IT solutions.</li>
+
+</ul>
+
+<hr>
+
+<h3>Ford Motor Company – Estrateg IA</h3>
+
+<p><strong>Software Tools Developer</strong></p>
+
+<p>January 2022 – June 2022</p>
+
+<ul>
+
+<li>Developed software tools supporting engineering operations.</li>
+
+<li>Participated in process automation and software development initiatives.</li>
+
+<li>Worked with enterprise development methodologies and engineering teams.</li>
+
+</ul>
+
+<hr>
+
+<h3>Sophava Framing Corporation</h3>
+
+<p><strong>Engineering Project Manager</strong></p>
+
+<p>November 2021 – January 2022</p>
+
+<ul>
+
+<li>Managed engineering projects and coordinated implementation activities.</li>
+
+<li>Supported project planning and execution.</li>
+
+</ul>
+
+<hr>
+
+<h3>Vista Entertainment</h3>
+
+<p><strong>Help Desk Support Specialist</strong></p>
+
+<p>August 2020 – August 2021</p>
+
+<ul>
+
+<li>Provided technical support and troubleshooting for software and hardware systems.</li>
+
+<li>Resolved end-user technical issues while maintaining high customer satisfaction.</li>
+
+</ul>
+
+<h2>Education</h2>
+
+<!-- ===================================================== -->
+
+<div class="content-block">
+
+    <h3>University of Essex — United Kingdom</h3>
+
+    <p><strong>Master of Science (MSc) in Artificial Intelligence</strong></p>
+
+    <p>June 2025 – Present</p>
+
+    <p>
+    Currently pursuing a Master of Science in Artificial Intelligence,
+    specializing in intelligent agents, machine learning, large language
+    models, explainable AI, responsible AI, and autonomous systems.
+    </p>
+
+</div>
+
+<!-- ===================================================== -->
+
+<div class="content-block">
+
+    <h3>Instituto Politécnico Nacional (IPN) — Mexico</h3>
+
+    <p><strong>Bachelor of Science in Mechatronics Engineering</strong></p>
+
+    <p>January 2016 – August 2021</p>
+
+    <p>
+    Studied mechanical design, industrial automation, robotics,
+    control systems, electronics, embedded systems,
+    PLC programming and industrial manufacturing processes.
+    </p>
+
+</div>
+
+<!-- ===================================================== -->
+
+<div class="content-block">
+
+    <h3>National Taiwan University of Science and Technology — Taiwan</h3>
+
+    <p><strong>International Engineering Program</strong></p>
+
+    <p>June 2019 – January 2020</p>
+
+    <ul>
+
+        <li>Neural Networks</li>
+
+        <li>Neuro-Fuzzy Systems</li>
+
+        <li>Optimal Control</li>
+
+        <li>Autonomous Robotic Systems</li>
+
+    </ul>
+
+</div>
+
+<!-- ===================================================== -->
+
+<div class="content-block">
+
+    <h3>Massachusetts Institute of Technology (MITx)</h3>
+
+    <p><strong>Diploma in Computer Science and Programming Using Python</strong></p>
+
+    <p>August 2021 – January 2022</p>
+
+    <p>
+    Completed advanced programming coursework focused on Python,
+    software development and computational problem solving.
+    </p>
+
+</div>
 
         <div class="tag-list">
           <span class="tag">Mechatronics Engineering</span>
@@ -797,7 +2894,7 @@
 
           <a
             class="button secondary"
-            href="mailto:YOUR-EMAIL@example.com"
+            href="mailto:rammarteaga@gmail.com"
           >
             Email
           </a>
