@@ -1961,43 +1961,155 @@ deliver a complex AI system.
       </p>
 
       <div class="grid">
-        <article class="card">
-          <h3>Agent Architecture Exercise</h3>
-          <p>
-            Analysis and comparison of reactive, deliberative, BDI and hybrid
-            agent architectures.
-          </p>
-          <a href="documents/agent-architecture-exercise.pdf" target="_blank">
-            Open evidence →
-          </a>
-        </article>
 
         <article class="card">
-          <h3>First Order Logic</h3>
+          <h3>Unit 6 Working Together: Communication between Agents</h3>
           <p>
-            Exercises involving predicates, logical representation and
-            reasoning.
+            An agent dialogue using KQML and KIF to demonstrate structured
+            communication between autonomous agents.
           </p>
-          <a href="documents/first-order-logic.pdf" target="_blank">
-            Open evidence →
-          </a>
-        </article>
 
-        <article class="card">
-          <h3>Programming Evidence</h3>
-          <p>
-            Code, testing evidence and technical development completed during
-            the project.
-          </p>
           <a
-            href="https://github.com/RamonFArteaga/Intelligent-Agents"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#"
+            class="text-link open-section"
+            data-section="unit6-agent-communication"
           >
-            View code →
+            Open activity →
           </a>
         </article>
+
+        <article class="card">
+          <h3>Unit 8: Understanding Natural Language Processing (NLP)</h3>
+          <p>
+            Creation and analysis of a constituency-based parse tree.
+          </p>
+
+          <a
+            href="#"
+            class="text-link open-section"
+            data-section="unit8-parse-tree"
+          >
+            Open activity →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Unit 10: Deep Learning in Action</h3>
+          <p>
+            Examination of a practical deep learning application.
+          </p>
+
+          <a
+            href="#"
+            class="text-link open-section"
+            data-section="unit10-deep-learning"
+          >
+            Open activity →
+          </a>
+        </article>
+
       </div>
+    </section>
+
+
+    <!-- UNIT 6 AGENT COMMUNICATION -->
+    <section id="unit6-agent-communication" class="section">
+
+      <h2 class="section-title">
+        Unit 6 Working Together: Communication between Agents
+      </h2>
+
+      <p class="section-introduction">
+        An agent dialogue using KQML and KIF between Alice, a procurement
+        agent, and Bob, a warehouse stock-control agent.
+      </p>
+
+      <div class="button-row">
+        <a
+          href="#"
+          class="button secondary open-section"
+          data-section="exercises"
+        >
+          ← Back to Exercises
+        </a>
+      </div>
+
+      <div class="content-block">
+        <h2>Activity Content</h2>
+
+        <p>
+          Paste the completed KQML and KIF agent dialogue in this workspace.
+        </p>
+      </div>
+
+    </section>
+
+
+    <!-- UNIT 8 NLP PARSE TREE -->
+    <section id="unit8-parse-tree" class="section">
+
+      <h2 class="section-title">
+        Unit 8: Understanding Natural Language Processing (NLP):
+        Creation of a Constituency-Based Parse Tree
+      </h2>
+
+      <p class="section-introduction">
+        Analysis of sentence structure through a constituency-based
+        natural-language parse tree.
+      </p>
+
+      <div class="button-row">
+        <a
+          href="#"
+          class="button secondary open-section"
+          data-section="exercises"
+        >
+          ← Back to Exercises
+        </a>
+      </div>
+
+      <div class="content-block">
+        <h2>Activity Content</h2>
+
+        <p>
+          Paste the constituency-based parse tree and its analysis in this
+          workspace.
+        </p>
+      </div>
+
+    </section>
+
+
+    <!-- UNIT 10 DEEP LEARNING -->
+    <section id="unit10-deep-learning" class="section">
+
+      <h2 class="section-title">
+        Unit 10: Deep Learning in Action: Deep Learning Application
+      </h2>
+
+      <p class="section-introduction">
+        Critical examination of a practical application of deep learning.
+      </p>
+
+      <div class="button-row">
+        <a
+          href="#"
+          class="button secondary open-section"
+          data-section="exercises"
+        >
+          ← Back to Exercises
+        </a>
+      </div>
+
+      <div class="content-block">
+        <h2>Activity Content</h2>
+
+        <p>
+          Paste the completed deep learning application activity in this
+          workspace.
+        </p>
+      </div>
+
     </section>
 <!-- FInal Project -->
     <section id="FP" class="section">
@@ -3358,9 +3470,19 @@ Ramón Flores Arteaga
   "unit9-summary"
 ];
 
-const navigationSection = discussionSections.includes(sectionId)
-  ? "discussions"
-  : sectionId;
+const exerciseSections = [
+  "unit6-agent-communication",
+  "unit8-parse-tree",
+  "unit10-deep-learning"
+];
+
+let navigationSection = sectionId;
+
+if (discussionSections.includes(sectionId)) {
+  navigationSection = "discussions";
+} else if (exerciseSections.includes(sectionId)) {
+  navigationSection = "exercises";
+}
 
 const selectedNavigationButton = document.querySelector(
   `.nav-button[data-section="${navigationSection}"]`
