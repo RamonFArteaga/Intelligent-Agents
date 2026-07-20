@@ -1473,10 +1473,25 @@ deliver a complex AI system.
         <article class="card">
           <h3>Unit 1: Initial Post</h3>
           <p>Introduction to Agent-Based Computing.</p>
-          <a href="documents/unit-1-discussion.pdf" target="_blank">
-            View discussion →
-          </a>
+          <a
+  href="#"
+  class="text-link open-section"
+  data-section="unit1-discussion"
+>
+  View discussion →
+</a>
         </article>
+
+        
+
+
+
+
+
+
+
+
+
 
         <article class="card">
           <h3>Unit 1: Peer Response #1 1</h3>
@@ -1532,6 +1547,52 @@ deliver a complex AI system.
 
       </div>
     </section>
+
+<!-- UNIT 1 DISCUSSION -->
+<section id="unit1-discussion" class="section">
+
+  <h2 class="section-title">Discussions</h2>
+
+  <p class="section-introduction">
+    Unit 1: Initial Post — Introduction to Agent-Based Computing.
+  </p>
+
+  <div class="button-row">
+    <a
+      href="#"
+      class="button secondary open-section"
+      data-section="discussions"
+    >
+      ← Back to Discussions
+    </a>
+  </div>
+
+  <div class="content-block">
+
+    <h2>Unit 1: Initial Post</h2>
+
+    <p>
+      
+    </p>
+
+    <!-- Ejemplo de imagen -->
+    <img
+      src="images/unit1.png"
+      alt="Unit 1 Discussion"
+      style="width: 100%; height: auto; margin-top: 20px;"
+    >
+
+  </div>
+
+</section>
+
+
+
+
+
+
+
+
 
     <!-- EXERCISES -->
     <section id="exercises" class="section">
@@ -2928,9 +2989,12 @@ Ramón Flores Arteaga
       });
 
       const selectedSection = document.getElementById(sectionId);
-      const selectedNavigationButton = document.querySelector(
-        `.nav-button[data-section="${sectionId}"]`
-      );
+      const navigationSection =
+  sectionId === "unit1-discussion" ? "discussions" : sectionId;
+
+const selectedNavigationButton = document.querySelector(
+  `.nav-button[data-section="${navigationSection}"]`
+);
 
       if (selectedSection) {
         selectedSection.classList.add("active");
@@ -2962,3 +3026,4 @@ Ramón Flores Arteaga
 
 </body>
 </html> 
+
