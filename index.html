@@ -337,6 +337,11 @@
           <button class="nav-button" data-section="exercises">Exercises</button>
         </li>
         <li>
+          <button class="nav-button" data-section="critical-evaluation">
+            Critical Evaluation
+          </button>
+        </li>
+        <li>
           <button class="nav-button" data-section="about">About Me</button>
         </li>
       </ul>
@@ -3607,6 +3612,358 @@ software architecture and software testing.
       
       </div>
       </section>
+
+    <!-- CRITICAL EVALUATION -->
+    <section id="critical-evaluation" class="section">
+
+      <h2 class="section-title">Critical Evaluation of the Final Project</h2>
+
+      <p class="section-introduction">
+        A critical evaluation of Inquiro, comparing the Week 7 design proposal
+        with the Week 11 implemented solution across architectural, technical,
+        evaluative and ethical dimensions.
+      </p>
+
+      <div class="content-block">
+
+        <h2>1. Introduction</h2>
+
+        <p>
+          This critical evaluation examines the development of
+          <strong>Inquiro</strong>, an LLM-powered multi-agent academic research
+          system. It compares the design produced during Week 7 with the
+          implemented solution completed in Week 11. The purpose is not simply
+          to describe the system, but to evaluate the quality of the original
+          design decisions, the extent to which implementation objectives were
+          achieved, the significance of deviations from the proposal, and the
+          broader technical and socio-technical implications of the final
+          solution.
+        </p>
+
+        <p>
+          The Week 7 design proposed four specialised agents: Planner,
+          Retriever, Processor and Writer. These were coordinated through
+          LangGraph and supported by arXiv, Mistral, Ollama, Jinja2 and
+          Streamlit. By Week 11, the system had evolved into a five-agent
+          architecture through the addition of a Validator Agent, alongside
+          structured JSON handling, execution logging, performance metrics,
+          automated testing, controlled error handling and deterministic report
+          generation.
+        </p>
+
+        <h2>2. Evaluation of the Week 7 Design Phase</h2>
+
+        <h3>2.1 Strengths of the Original Design</h3>
+
+        <p>
+          The Week 7 proposal demonstrated a sound understanding of modular
+          agent-based architecture. Dividing the workflow into specialised
+          agents reduced the complexity associated with a monolithic language
+          model and supported clearer separation of responsibilities. This
+          improved maintainability, testability and the ability to reason about
+          system behaviour.
+        </p>
+
+        <p>
+          The selection of LangGraph was appropriate because the project
+          required explicit state management and controlled transitions between
+          agent stages. This was preferable to an informal chain of prompts,
+          because it allowed intermediate outputs to be preserved and the
+          execution sequence to remain observable.
+        </p>
+
+        <p>
+          Retrieval-Augmented Generation was also a strong design choice.
+          Grounding the system in arXiv literature reduced the risk of unsupported
+          academic claims. The use of Jinja2 for deterministic report generation
+          was similarly well justified because it separated evidence processing
+          from document formatting and reduced uncontrolled text generation.
+        </p>
+
+        <p>
+          The proposed technology stack was realistic and cost-conscious.
+          Open-source components and local model execution improved
+          reproducibility and reduced dependence on proprietary services.
+        </p>
+
+        <h3>2.2 Limitations of the Original Design</h3>
+
+        <p>
+          The original four-agent architecture underestimated the importance of
+          validation. It assumed that retrieved information could pass directly
+          into semantic processing, despite common issues such as duplicate
+          papers, missing abstracts, malformed metadata and temporary API
+          failures.
+        </p>
+
+        <p>
+          The proposal also treated explainability primarily as visibility of
+          intermediate outputs. Although this improves transparency, it does not
+          prove that the reasoning is valid or complete. A stronger design would
+          have distinguished between transparency, interpretability and
+          verifiability.
+        </p>
+
+        <p>
+          The proposed evaluation criteria, including relevance, completeness,
+          coherence, processing time and user satisfaction, were appropriate but
+          insufficiently operationalised. The proposal did not define precise
+          thresholds, scoring procedures or baseline comparisons, which limited
+          the potential strength of the evaluation.
+        </p>
+
+        <p>
+          Dependence on arXiv also narrowed the evidence base. This simplified
+          implementation but introduced source bias and risked excluding
+          relevant peer-reviewed research from other databases.
+        </p>
+
+        <h2>3. Evaluation of the Week 11 Implemented Solution</h2>
+
+        <h3>3.1 Architectural Improvements</h3>
+
+        <p>
+          The addition of the Validator Agent was the most significant
+          architectural improvement. It introduced an explicit stage for
+          checking completeness, removing duplicates and filtering unsuitable
+          records before processing. This corrected a genuine weakness in the
+          original design and strengthened separation of concerns.
+        </p>
+
+        <p>
+          The final five-agent architecture provided clearer contracts between
+          stages. The Planner decomposed the task, the Retriever acquired
+          evidence, the Validator assessed input quality, the Processor
+          summarised and ranked findings, and the Writer produced the final
+          deterministic report.
+        </p>
+
+        <p>
+          Logging, performance metrics and structured state improved
+          observability. These features made failures easier to diagnose and
+          shifted the project from a conceptual agent demonstration toward a
+          more auditable software system.
+        </p>
+
+        <h3>3.2 Implementation Effectiveness</h3>
+
+        <p>
+          The implemented system successfully achieved the central objective of
+          the Week 7 proposal. It demonstrated autonomous task decomposition,
+          academic information retrieval, validation, semantic processing and
+          structured report generation.
+        </p>
+
+        <p>
+          Deterministic report generation was particularly effective. Allowing
+          unrestricted final-stage generation would have increased the risk of
+          unsupported claims. Jinja2 constrained the Writer Agent and preserved
+          stronger traceability between retrieved evidence and the final report.
+        </p>
+
+        <p>
+          Automated testing also strengthened the implementation by providing
+          evidence of repeatability. However, the test set remained small, so it
+          offered limited evidence about generalisability across disciplines,
+          query types and failure conditions.
+        </p>
+
+        <h3>3.3 Robustness and Failure Management</h3>
+
+        <p>
+          The implementation encountered realistic failures, including arXiv
+          HTTP 503 errors and malformed JSON produced by the local language
+          model. The introduction of controlled exceptions, fallback behaviour,
+          JSON extraction and validation was technically appropriate.
+        </p>
+
+        <p>
+          These improvements enabled graceful degradation rather than
+          uncontrolled failure. Nevertheless, a production-grade system would
+          require stronger retry policies, caching, source redundancy, health
+          monitoring and recovery from partial state corruption.
+        </p>
+
+        <h2>4. Comparison Between Design and Implementation</h2>
+
+        <p>
+          The final implementation remained faithful to the central vision of
+          the Week 7 proposal. The principles of modularity, local model
+          execution, academic retrieval and deterministic reporting were
+          preserved.
+        </p>
+
+        <p>
+          The principal divergence was the addition of the Validator Agent and
+          the stronger emphasis on reliability engineering. This was not a
+          failure of design consistency; it was evidence of iterative refinement
+          based on implementation experience.
+        </p>
+
+        <p>
+          Explainability also evolved. The proposal focused on displaying
+          intermediate outputs, while the final implementation added logs,
+          metrics and explicit validation. This represented a movement from
+          presentational transparency toward operational accountability.
+        </p>
+
+        <h2>5. Evaluation Methodology and Evidence</h2>
+
+        <p>
+          The project included automated tests and performance measurements,
+          providing evidence of basic reliability and repeatability. However,
+          the evaluation would have been stronger with a formal baseline.
+        </p>
+
+        <p>
+          A comparison with a single-agent implementation or a conventional
+          retrieval pipeline would have helped determine whether the multi-agent
+          design produced measurable improvements in quality, accuracy or
+          maintainability.
+        </p>
+
+        <p>
+          Relevance scoring should also have been assessed by independent human
+          reviewers. Model-generated relevance scores cannot serve as their own
+          validation standard.
+        </p>
+
+        <p>
+          A larger and more diverse test set should have included ambiguous
+          queries, interdisciplinary topics, failed retrievals and adversarial
+          prompts. Formal error analysis would also have helped identify where
+          and why the system performed poorly.
+        </p>
+
+        <h2>6. Ethical and Socio-Technical Evaluation</h2>
+
+        <p>
+          Inquiro presents a lower level of physical risk than an industrial
+          control agent, but it still raises important ethical concerns. The
+          system ranks evidence and generates reports that may influence users'
+          understanding of a research topic.
+        </p>
+
+        <p>
+          Source bias is central. Restricting retrieval to arXiv may privilege
+          particular disciplines and publication cultures. The ranking process
+          may reinforce this bias by favouring papers whose abstracts closely
+          resemble the wording of the query.
+        </p>
+
+        <p>
+          Automation bias is also relevant. Numerical relevance scores and fluent
+          summaries may encourage users to accept the system's judgement without
+          checking the original papers. Outputs should therefore be presented as
+          recommendations rather than authoritative conclusions.
+        </p>
+
+        <p>
+          Academic integrity must also be considered. The system can support
+          literature discovery and synthesis, but it should not replace critical
+          reading or original academic writing. Source links, provenance and
+          disclosure of model involvement should remain visible.
+        </p>
+
+        <h2>7. Professional and Personal Reflection</h2>
+
+        <p>
+          The project demonstrated that a technically plausible architecture can
+          reveal unanticipated weaknesses during implementation. The most
+          important learning was that validation, observability and controlled
+          failure are core architectural requirements rather than optional
+          additions.
+        </p>
+
+        <p>
+          It also demonstrated the difference between producing a coherent
+          output and establishing confidence in that output. A report may appear
+          credible while still containing ranking bias, incomplete evidence or
+          model-generated error. This reinforced the importance of verification
+          and human oversight.
+        </p>
+
+        <p>
+          From a teamwork perspective, the proposal stage demonstrated the value
+          of collaborative planning, but the implementation exposed limitations
+          in responsibility allocation and contribution tracking. Future
+          projects should establish explicit roles, milestones, decision
+          ownership and documented evidence of contribution from the outset.
+        </p>
+
+        <h2>8. Recommendations for Future Development</h2>
+
+        <ul>
+          <li>Integrate multiple academic databases.</li>
+          <li>Introduce independent human relevance assessment.</li>
+          <li>Benchmark against single-agent and non-agent baselines.</li>
+          <li>Add citation-level provenance for generated claims.</li>
+          <li>Display confidence and uncertainty indicators.</li>
+          <li>Expand adversarial and failure-oriented testing.</li>
+          <li>Implement stronger retries, caching and source redundancy.</li>
+          <li>Conduct usability testing with students or researchers.</li>
+          <li>Add explicit academic-integrity guidance.</li>
+        </ul>
+
+        <h2>9. Overall Judgement</h2>
+
+        <p>
+          Overall, Inquiro was a successful implementation of the Week 7
+          proposal and demonstrated a credible application of agent-based
+          computing to academic research support. The project showed strong
+          architectural reasoning, appropriate use of specialised agents,
+          effective retrieval grounding and meaningful refinement during
+          implementation.
+        </p>
+
+        <p>
+          Its principal limitations were the small evaluation scale, dependence
+          on a single academic source, incomplete benchmarking and the absence of
+          formal human assessment. These limitations restrict the strength of
+          claims that can be made regarding accuracy, generalisability and
+          superiority over simpler approaches.
+        </p>
+
+        <p>
+          The most important achievement was the evolution from a theoretically
+          modular design into a more robust and accountable implementation. The
+          addition of validation, logging, testing and graceful degradation
+          demonstrated critical engagement with the difference between a
+          prototype that works under ideal conditions and an intelligent system
+          designed to operate responsibly under realistic conditions.
+        </p>
+
+        <h2>References</h2>
+
+        <p>
+          Lewis, P. et al. (2020) 'Retrieval-Augmented Generation for
+          knowledge-intensive NLP tasks', <em>Advances in Neural Information
+          Processing Systems</em>, 33, pp. 9459-9474.
+        </p>
+
+        <p>
+          Russell, S.J. and Norvig, P. (2021)
+          <em>Artificial Intelligence: A Modern Approach</em>. 4th ed.
+          Harlow: Pearson.
+        </p>
+
+        <p>
+          Wooldridge, M. (2009)
+          <em>An Introduction to MultiAgent Systems</em>. 2nd ed.
+          Chichester: John Wiley &amp; Sons.
+        </p>
+
+        <p>
+          Yao, S. et al. (2023) 'ReAct: Synergizing reasoning and acting in
+          language models', <em>International Conference on Learning
+          Representations</em>.
+        </p>
+
+      </div>
+
+    </section>
+
+
     <!-- ABOUT -->
     <section id="about" class="section">
       <h2 class="section-title">About Me</h2>
