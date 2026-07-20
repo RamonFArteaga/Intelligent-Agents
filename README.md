@@ -3,6 +3,7 @@ This is my e-PortFolio for the Final Submission of Intelligent Agents Course at 
 
 Student: Ramon Flores Arteaga
 ePortFolio Website for Intelligent Agents: https://ramonfarteaga.github.io/Intelligent-Agents/
+Repository URL: https://github.com/RamonFArteaga/Intelligent-Agents.git
 
 IT Includes 9 tabs:
 
