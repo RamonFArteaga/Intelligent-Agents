@@ -1,1 +1,867 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Intelligent Agents e-Portfolio | Ramon Flores Arteaga</title>
+
+  <style>
+    :root {
+      --background: #090b0d;
+      --surface: #111419;
+      --surface-light: #181c23;
+      --border: #2a3039;
+      --text: #e6e9ef;
+      --muted: #a9b1c1;
+      --accent: #e994e7;
+      --accent-dark: #71516f;
+      --link: #9db8ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: min(1100px, 90%);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 30px 0 25px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 4px;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(9, 11, 13, 0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-list {
+      display: flex;
+      gap: 45px;
+      overflow-x: auto;
+      list-style: none;
+    }
+
+    .nav-button {
+      background: none;
+      border: none;
+      color: #b5bfd4;
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: bold;
+      padding: 20px 0 17px;
+      white-space: nowrap;
+      border-bottom: 4px solid transparent;
+    }
+
+    .nav-button:hover {
+      color: var(--text);
+    }
+
+    .nav-button.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent-dark);
+    }
+
+    main {
+      min-height: 70vh;
+      padding: 45px 0 70px;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero {
+      padding: 65px 0;
+    }
+
+    .hero-label {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero h2 {
+      max-width: 850px;
+      margin: 12px 0 20px;
+      font-size: clamp(2.2rem, 6vw, 4.4rem);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.15rem;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 7px;
+      background: var(--accent-dark);
+      color: white;
+      font-weight: bold;
+      border: 1px solid #926b90;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .button:hover {
+      filter: brightness(1.15);
+      text-decoration: none;
+    }
+
+    .section-title {
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+
+    .section-introduction {
+      max-width: 850px;
+      margin-bottom: 30px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      transition: 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-dark);
+      background: var(--surface-light);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 1.25rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .content-block {
+      margin-bottom: 28px;
+      padding: 25px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .content-block h3 {
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .content-block p {
+      margin-bottom: 14px;
+    }
+
+    .content-block ul {
+      padding-left: 22px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      padding: 6px 11px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .project-agents {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .agent {
+      padding: 18px;
+      text-align: center;
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    footer {
+      padding: 25px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .nav-list {
+        gap: 28px;
+      }
+
+      .hero {
+        padding: 40px 0;
+      }
+
+      main {
+        padding-top: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <h1>Intelligent Agents e-Portfolio</h1>
+      <p>Ramon Flores Arteaga · MSc Artificial Intelligence</p>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container">
+      <ul class="nav-list">
+        <li>
+          <button class="nav-button active" data-section="home">Home</button>
+        </li>
+        <li>
+          <button class="nav-button" data-section="reflection">Reflection</button>
+        </li>
+        <li>
+          <button class="nav-button" data-section="project">Final Project</button>
+        </li>
+        <li>
+          <button class="nav-button" data-section="teamwork">Teamwork</button>
+        </li>
+        <li>
+          <button class="nav-button" data-section="discussions">Discussions</button>
+        </li>
+        <li>
+          <button class="nav-button" data-section="exercises">Exercises</button>
+        </li>
+        <li>
+          <button class="nav-button" data-section="about">About Me</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- HOME -->
+    <section id="home" class="section active">
+      <div class="hero">
+        <div class="hero-label">University of Essex</div>
+
+        <h2>
+          Intelligent Agents and Multi-Agent Systems
+        </h2>
+
+        <p>
+          This e-portfolio documents my academic work, discussions,
+          collaborative activities, technical exercises and final project
+          completed during the Intelligent Agents module of the MSc Artificial
+          Intelligence programme.
+        </p>
+
+        <div class="button-row">
+          <button class="button open-section" data-section="project">
+            View Final Project
+          </button>
+
+          <button class="button secondary open-section" data-section="reflection">
+            Read Reflection
+          </button>
+        </div>
+
+        <div class="tag-list">
+          <span class="tag">Artificial Intelligence</span>
+          <span class="tag">Multi-Agent Systems</span>
+          <span class="tag">LLM Agents</span>
+          <span class="tag">Responsible AI</span>
+          <span class="tag">Explainable AI</span>
+        </div>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Critical Reflection</h3>
+          <p>
+            Evaluation of my learning, teamwork, individual contribution,
+            ethical considerations and professional development.
+          </p>
+          <a href="#" class="text-link open-section" data-section="reflection">
+            Open reflection →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Final Project</h3>
+          <p>
+            Design and implementation of Inquiro, a five-agent academic
+            research and report-generation system.
+          </p>
+          <a href="#" class="text-link open-section" data-section="project">
+            Open project →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Module Evidence</h3>
+          <p>
+            Discussion posts, peer responses, exercises and collaborative
+            evidence completed throughout the module.
+          </p>
+          <a href="#" class="text-link open-section" data-section="discussions">
+            View evidence →
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- REFLECTION -->
+    <section id="reflection" class="section">
+      <h2 class="section-title">Critical Reflection</h2>
+
+      <p class="section-introduction">
+        This section presents a critical evaluation of my learning experience,
+        individual contribution, collaboration and application of intelligent
+        agent concepts.
+      </p>
+
+      <div class="content-block">
+        <h3>Introduction</h3>
+
+        <p>
+          The Intelligent Agents module strengthened my understanding of how
+          autonomous systems perceive information, make decisions, communicate
+          and act within complex environments. The module also demonstrated
+          that effective agent development requires more than technical
+          functionality. It requires transparency, ethical governance,
+          validation, accountability and careful consideration of the
+          consequences of autonomous decision-making.
+        </p>
+
+        <p>
+          My learning developed through academic discussions, collaborative
+          planning and the individual implementation of the Inquiro
+          multi-agent system.
+        </p>
+      </div>
+
+      <div class="content-block">
+        <h3>Bias in Autonomous Decision-Making</h3>
+
+        <p>
+          One of the most important lessons was that intelligent agents may
+          reproduce or amplify bias contained in their training data,
+          retrieval sources or decision rules. An agent may appear objective
+          while still producing unequal or misleading outcomes.
+        </p>
+
+        <p>
+          This reinforced the importance of validating inputs, comparing
+          multiple sources and retaining human oversight when agent outputs
+          influence important decisions.
+        </p>
+      </div>
+
+      <div class="content-block">
+        <h3>Explainable Artificial Intelligence</h3>
+
+        <p>
+          Explainability became particularly relevant during the development
+          of Inquiro. A system that produces a report without showing how it
+          reached its conclusions is difficult to evaluate or trust.
+        </p>
+
+        <p>
+          Logging, source attribution, structured outputs and validation were
+          therefore essential elements of the final implementation. These
+          mechanisms improved traceability and made the agent workflow easier
+          to inspect.
+        </p>
+      </div>
+
+      <div class="content-block">
+        <h3>Responsible Deployment</h3>
+
+        <p>
+          The module changed my understanding of deployment. A technically
+          functional prototype is not automatically ready for responsible
+          organisational use. Deployment requires access controls, audit
+          trails, testing, human authorisation and clear boundaries around
+          agent autonomy.
+        </p>
+      </div>
+
+      <div class="content-block">
+        <h3>Conclusion</h3>
+
+        <p>
+          Overall, the module developed my ability to connect intelligent agent
+          theory with practical system design. The collaborative proposal
+          strengthened the conceptual foundation of the project, while the
+          individual implementation required me to translate that foundation
+          into a functional and testable system.
+        </p>
+
+        <p>
+          The experience reinforced the importance of explainability,
+          validation, responsible deployment and human oversight. These lessons
+          are directly applicable to my professional interest in developing
+          reliable artificial intelligence solutions for industrial
+          environments.
+        </p>
+      </div>
+    </section>
+
+    <!-- FINAL PROJECT -->
+    <section id="project" class="section">
+      <h2 class="section-title">Final Project: Inquiro</h2>
+
+      <p class="section-introduction">
+        Inquiro is an LLM-powered multi-agent system designed to support
+        academic research, analysis, validation and structured report
+        generation.
+      </p>
+
+      <div class="content-block">
+        <h3>Project Overview</h3>
+
+        <p>
+          The original project proposal was developed collaboratively by the
+          team. I individually implemented, tested, modified and documented the
+          final system.
+        </p>
+
+        <p>
+          The proposal initially described four agents. During implementation,
+          I introduced an additional Validator Agent to improve output quality,
+          structural compliance and reliability.
+        </p>
+      </div>
+
+      <div class="content-block">
+        <h3>Five-Agent Architecture</h3>
+
+        <div class="project-agents">
+          <div class="agent">
+            <strong>Planner Agent</strong>
+            <p>Defines the research plan and task sequence.</p>
+          </div>
+
+          <div class="agent">
+            <strong>Research Agent</strong>
+            <p>Collects and organises relevant information.</p>
+          </div>
+
+          <div class="agent">
+            <strong>Analysis Agent</strong>
+            <p>Evaluates evidence and identifies key findings.</p>
+          </div>
+
+          <div class="agent">
+            <strong>Validator Agent</strong>
+            <p>Checks quality, structure and consistency.</p>
+          </div>
+
+          <div class="agent">
+            <strong>Writer Agent</strong>
+            <p>Generates the final structured academic report.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-block">
+        <h3>Implementation Improvements</h3>
+
+        <ul>
+          <li>Added a dedicated Validator Agent.</li>
+          <li>Implemented structured JSON validation.</li>
+          <li>Added logging and performance metrics.</li>
+          <li>Added automated tests.</li>
+          <li>Implemented query validation.</li>
+          <li>Introduced graceful degradation.</li>
+          <li>Created explicit local model routing.</li>
+          <li>Improved traceability and error handling.</li>
+        </ul>
+      </div>
+
+      <div class="content-block">
+        <h3>Project Links</h3>
+
+        <div class="button-row">
+          <a
+            class="button"
+            href="https://github.com/RamonFArteaga/Intelligent-Agents"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub Repository
+          </a>
+
+          <a
+            class="button secondary"
+            href="documents/final-project.pdf"
+            target="_blank"
+          >
+            Final Project Document
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAMWORK -->
+    <section id="teamwork" class="section">
+      <h2 class="section-title">Teamwork</h2>
+
+      <p class="section-introduction">
+        Evidence and reflection related to collaborative project planning,
+        communication and contribution.
+      </p>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Collaborative Proposal</h3>
+          <p>
+            The initial concept and architecture were developed collectively by
+            the project team.
+          </p>
+          <a href="documents/team-proposal.pdf" target="_blank">
+            Open proposal →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>My Contribution</h3>
+          <p>
+            I contributed to planning and later completed the coding, testing,
+            modification and documentation of the final implementation.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Collaboration Reflection</h3>
+          <p>
+            The experience highlighted the importance of participation,
+            accountability, communication and clearly defined responsibilities.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- DISCUSSIONS -->
+    <section id="discussions" class="section">
+      <h2 class="section-title">Discussions</h2>
+
+      <p class="section-introduction">
+        Discussion posts and peer responses completed during the module.
+      </p>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Unit 1</h3>
+          <p>Introduction to Agent-Based Computing.</p>
+          <a href="documents/unit-1-discussion.pdf" target="_blank">
+            View discussion →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Unit 2</h3>
+          <p>First Order Logic and knowledge representation.</p>
+          <a href="documents/unit-2-discussion.pdf" target="_blank">
+            View discussion →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Unit 3</h3>
+          <p>Agent architectures and intelligent behaviour.</p>
+          <a href="documents/unit-3-discussion.pdf" target="_blank">
+            View discussion →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Peer Response 1</h3>
+          <p>
+            Critical response addressing organisational applications,
+            governance and agent reliability.
+          </p>
+          <a href="documents/peer-response-1.pdf" target="_blank">
+            View response →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Peer Response 2</h3>
+          <p>
+            Critical response addressing LLM agents, automation, permissions
+            and human oversight.
+          </p>
+          <a href="documents/peer-response-2.pdf" target="_blank">
+            View response →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Summary Post</h3>
+          <p>
+            Summary of learning from the opening units and peer discussions.
+          </p>
+          <a href="documents/summary-post.pdf" target="_blank">
+            View summary →
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- EXERCISES -->
+    <section id="exercises" class="section">
+      <h2 class="section-title">Exercises</h2>
+
+      <p class="section-introduction">
+        Practical exercises, technical activities and supporting module
+        evidence.
+      </p>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Agent Architecture Exercise</h3>
+          <p>
+            Analysis and comparison of reactive, deliberative, BDI and hybrid
+            agent architectures.
+          </p>
+          <a href="documents/agent-architecture-exercise.pdf" target="_blank">
+            Open evidence →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>First Order Logic</h3>
+          <p>
+            Exercises involving predicates, logical representation and
+            reasoning.
+          </p>
+          <a href="documents/first-order-logic.pdf" target="_blank">
+            Open evidence →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>Programming Evidence</h3>
+          <p>
+            Code, testing evidence and technical development completed during
+            the project.
+          </p>
+          <a
+            href="https://github.com/RamonFArteaga/Intelligent-Agents"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View code →
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <h2 class="section-title">About Me</h2>
+
+      <div class="content-block">
+        <h3>Ramon Flores Arteaga</h3>
+
+        <p>
+          I am a mechatronics engineer and maintenance professional with
+          experience in industrial automation, electrical and mechanical
+          troubleshooting, PLCs, variable-frequency drives, SCADA systems and
+          artificial intelligence.
+        </p>
+
+        <p>
+          I am currently completing an MSc in Artificial Intelligence at the
+          University of Essex. My professional interests include intelligent
+          industrial systems, predictive maintenance, autonomous agents,
+          explainable AI and practical applications of large language models.
+        </p>
+
+        <div class="tag-list">
+          <span class="tag">Mechatronics Engineering</span>
+          <span class="tag">Industrial Automation</span>
+          <span class="tag">PLC Programming</span>
+          <span class="tag">VFD Troubleshooting</span>
+          <span class="tag">SCADA</span>
+          <span class="tag">Artificial Intelligence</span>
+        </div>
+
+        <div class="button-row">
+          <a
+            class="button"
+            href="https://github.com/RamonFArteaga"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+
+          <a
+            class="button secondary"
+            href="mailto:YOUR-EMAIL@example.com"
+          >
+            Email
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        © 2026 Ramon Flores Arteaga · MSc Artificial Intelligence ·
+        University of Essex
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const navigationButtons = document.querySelectorAll(".nav-button");
+    const sectionButtons = document.querySelectorAll(".open-section");
+    const sections = document.querySelectorAll(".section");
+
+    function openSection(sectionId) {
+      sections.forEach((section) => {
+        section.classList.remove("active");
+      });
+
+      navigationButtons.forEach((button) => {
+        button.classList.remove("active");
+      });
+
+      const selectedSection = document.getElementById(sectionId);
+      const selectedNavigationButton = document.querySelector(
+        `.nav-button[data-section="${sectionId}"]`
+      );
+
+      if (selectedSection) {
+        selectedSection.classList.add("active");
+      }
+
+      if (selectedNavigationButton) {
+        selectedNavigationButton.classList.add("active");
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    navigationButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        openSection(button.dataset.section);
+      });
+    });
+
+    sectionButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        openSection(button.dataset.section);
+      });
+    });
+  </script>
+
+</body>
+</html> 
